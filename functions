@@ -1,0 +1,417 @@
+// supabase/functions/getRiseScore/index.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
+
+export async function handler(req) {
+  const { studentId } = await req.json();
+  if (!studentId) return new Response(JSON.stringify({ error: 'Missing studentId' }), { status: 400 });
+
+  // 1. Fetch all configs
+  const { data: configs } = await supabase.from('config').select('*');
+  const weights = configs.find(c => c.key === 'rise_weights')?.value || {
+    attendance: 20, activities: 20, evaluation: 20, quiz: 20, coursera: 20
+  };
+  const attCfg = configs.find(c => c.key === 'attendance_config')?.value || { weeks: 14, subjects: 5, max_points: 20 };
+  const actCfg = configs.find(c => c.key === 'activities_config')?.value || { max_points: 20 };
+  const evalCfg = configs.find(c => c.key === 'evaluation_config')?.value || { weeks: 14, subjects: 5, max_points: 20 };
+  const quizCfg = configs.find(c => c.key === 'quiz_config')?.value || { max_points: 20 };
+  const courseraCfg = configs.find(c => c.key === 'coursera_config')?.value || { max_points: 20 };
+
+  // 2. Calculate attendance points
+  const totalSessions = attCfg.weeks * attCfg.subjects;
+  const { count: attended } = await supabase
+    .from('attendance_logs')
+    .select('*', { count: 'exact', head: true })
+    .eq('student_id', studentId)
+    .eq('verified', true);
+  const attendancePct = totalSessions > 0 ? Math.min(100, (attended / totalSessions) * 100) : 0;
+  const attendancePoints = Math.round((attendancePct / 100) * attCfg.max_points);
+
+  // 3. Activities points (capped)
+  const { data: activities } = await supabase
+    .from('activities')
+    .select('points')
+    .eq('student_id', studentId)
+    .eq('status', 'approved');
+  const totalActivityPoints = activities.reduce((s, a) => s + a.points, 0);
+  const activitiesPoints = Math.min(totalActivityPoints, actCfg.max_points);
+
+  // 4. Evaluation points
+  const { count: evaluations } = await supabase
+    .from('evaluations')
+    .select('*', { count: 'exact', head: true })
+    .eq('student_id', studentId);
+  const evalPct = Math.min(100, (evaluations / (evalCfg.weeks * evalCfg.subjects)) * 100);
+  const evaluationPoints = Math.round((evalPct / 100) * evalCfg.max_points);
+
+  // 5. Quiz points
+  const { data: quizData } = await supabase
+    .from('quiz_results')
+    .select('points_awarded')
+    .eq('student_id', studentId);
+  const totalQuizPoints = quizData.reduce((s, q) => s + q.points_awarded, 0);
+  const quizPoints = Math.min(totalQuizPoints, quizCfg.max_points);
+
+  // 6. Coursera points
+  const { data: certs } = await supabase
+    .from('certificates')
+    .select('points_awarded')
+    .eq('student_id', studentId)
+    .eq('verified', true);
+  const totalCourseraPoints = certs.reduce((s, c) => s + c.points_awarded, 0);
+  const courseraPoints = Math.min(totalCourseraPoints, courseraCfg.max_points);
+
+  // 7. Total RISE = sum of all category points (all out of 20)
+  const categories = {
+    attendance: attendancePoints,
+    activities: activitiesPoints,
+    evaluation: evaluationPoints,
+    quiz: quizPoints,
+    coursera: courseraPoints
+  };
+  const total = Object.values(categories).reduce((s, v) => s + v, 0);
+
+  return new Response(JSON.stringify({ total, categories }), { status: 200 });
+}
+// supabase/functions/verifyCertificate/index.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
+const GEMINI_KEY = Deno.env.get('GEMINI_API_KEY');
+
+export async function handler(req) {
+  const { fileUrl, courseUrl, studentId } = await req.json();
+  if (!fileUrl || !courseUrl) return new Response(JSON.stringify({ error: 'Missing file or URL' }), { status: 400 });
+
+  // 1. Fetch existing certificates to prevent duplicates
+  const { data: existing } = await supabase
+    .from('certificates')
+    .select('course_url')
+    .eq('student_id', studentId)
+    .eq('verified', true);
+  if (existing.some(c => c.course_url === courseUrl)) {
+    return new Response(JSON.stringify({ verified: false, reason: 'Certificate already uploaded' }), { status: 200 });
+  }
+
+  // 2. Use Gemini to extract text from image (or rely on client OCR)
+  //    Here we assume the client sent the extracted text; for this demo, we'll just check URL pattern.
+  //    In production, use Gemini Vision API to read the certificate image.
+  const isCoursera = courseUrl.includes('coursera.org') && courseUrl.includes('accomplishments');
+  if (!isCoursera) {
+    return new Response(JSON.stringify({ verified: false, reason: 'Invalid Coursera URL' }), { status: 200 });
+  }
+
+  // 3. Simulate OCR check – we'll trust the URL for now, but in real scenario, we'd extract name, date, etc.
+  // For demo, we mark as verified and award points from config.
+  const { data: cfg } = await supabase
+    .from('config')
+    .select('value')
+    .eq('key', 'coursera_config')
+    .single();
+  const pointsPerCert = cfg?.value?.points_per_cert || 5;
+
+  // 4. Record the certificate
+  await supabase.from('certificates').insert({
+    student_id: studentId,
+    course_url: courseUrl,
+    course_name: 'Coursera Course', // extract from OCR
+    file_url: fileUrl,
+    verified: true,
+    points_awarded: pointsPerCert
+  });
+
+  // 5. Add to rise_points (audit)
+  await supabase.from('rise_points').insert({
+    student_id: studentId,
+    category: 'coursera',
+    points: pointsPerCert,
+    reason: `Coursera certificate verified: ${courseUrl}`
+  });
+
+  return new Response(JSON.stringify({ verified: true, points: pointsPerCert }), { status: 200 });
+}
+// supabase/functions/recordActivity/index.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
+
+export async function handler(req) {
+  const { studentId, type, level, title, proof } = await req.json();
+  if (!studentId || !type || !title) {
+    return new Response(JSON.stringify({ error: 'Missing fields' }), { status: 400 });
+  }
+
+  // 1. Fetch config
+  const { data: cfg } = await supabase
+    .from('config')
+    .select('value')
+    .eq('key', 'activities_config')
+    .single();
+  const actCfg = cfg?.value || { workshop: 2, talk: 1, seminar: 2, competition: { university: 5, national: 8, international: 12 }, max_points: 20 };
+
+  // 2. Calculate points
+  let points = 0;
+  if (type === 'competition') {
+    points = actCfg.competition?.[level] || 0;
+  } else {
+    points = actCfg[type] || 0;
+  }
+
+  // 3. Check if student has reached max activity points
+  const { data: existing } = await supabase
+    .from('activities')
+    .select('points')
+    .eq('student_id', studentId)
+    .eq('status', 'approved');
+  const totalSoFar = existing.reduce((s, a) => s + a.points, 0);
+  if (totalSoFar >= actCfg.max_points) {
+    return new Response(JSON.stringify({
+      error: 'Maximum activity points reached. You can still participate but no more points will be awarded.'
+    }), { status: 400 });
+  }
+
+  // 4. Insert activity (status = pending, approval required)
+  await supabase.from('activities').insert({
+    student_id: studentId,
+    type,
+    level,
+    title,
+    proof_url: proof,
+    points: points,
+    status: 'pending'
+  });
+
+  return new Response(JSON.stringify({ success: true, points }), { status: 200 });
+}
+// supabase/functions/recordAttendance/index.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
+
+export async function handler(req) {
+  const { sessionId, studentId, gpsLat, gpsLng } = await req.json();
+  if (!sessionId || !studentId) {
+    return new Response(JSON.stringify({ error: 'Missing session or student' }), { status: 400 });
+  }
+
+  // 1. Validate session exists and is not expired
+  const { data: session } = await supabase
+    .from('attendance_sessions')
+    .select('*')
+    .eq('id', sessionId)
+    .single();
+  if (!session) return new Response(JSON.stringify({ error: 'Invalid session' }), { status: 404 });
+  if (new Date(session.expires_at) < new Date()) {
+    return new Response(JSON.stringify({ error: 'Session expired' }), { status: 400 });
+  }
+
+  // 2. GPS check (BAC Tower radius 500m)
+  const BAC_LAT = 3.1478, BAC_LNG = 101.6953;
+  const distance = calculateDistance(BAC_LAT, BAC_LNG, gpsLat, gpsLng);
+  if (distance > 500) {
+    return new Response(JSON.stringify({ error: 'You must be within 500m of campus' }), { status: 400 });
+  }
+
+  // 3. Prevent duplicate attendance
+  const { data: existing } = await supabase
+    .from('attendance_logs')
+    .select('id')
+    .eq('student_id', studentId)
+    .eq('session_id', sessionId)
+    .single();
+  if (existing) {
+    return new Response(JSON.stringify({ error: 'Already marked for this session' }), { status: 400 });
+  }
+
+  // 4. Record attendance
+  await supabase.from('attendance_logs').insert({
+    student_id: studentId,
+    session_id: sessionId,
+    gps_lat: gpsLat,
+    gps_lng: gpsLng,
+    verified: true
+  });
+
+  // 5. Award attendance points (handled by trigger or subsequent batch)
+  // For simplicity, we'll call the RISE recalculation via a background job.
+
+  return new Response(JSON.stringify({ success: true }), { status: 200 });
+}
+
+function calculateDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371e3; // metres
+  const φ1 = lat1 * Math.PI/180;
+  const φ2 = lat2 * Math.PI/180;
+  const Δφ = (lat2-lat1) * Math.PI/180;
+  const Δλ = (lng2-lng1) * Math.PI/180;
+  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+// supabase/functions/recordQuizResult/index.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
+
+export async function handler(req) {
+  const { studentId, opponentId, score, opponentScore, difficulty, questionsAnswered, correctAnswers } = await req.json();
+  if (!studentId) return new Response(JSON.stringify({ error: 'Missing studentId' }), { status: 400 });
+
+  // 1. Determine points
+  const { data: cfg } = await supabase
+    .from('config')
+    .select('value')
+    .eq('key', 'quiz_config')
+    .single();
+  const quizCfg = cfg?.value || { max_points: 20, points_per_win: 15, points_per_participation: 5 };
+
+  const isWin = score > opponentScore;
+  let points = isWin ? quizCfg.points_per_win : quizCfg.points_per_participation;
+
+  // 2. Check if student already reached max quiz points
+  const { data: existing } = await supabase
+    .from('quiz_results')
+    .select('points_awarded')
+    .eq('student_id', studentId);
+  const totalSoFar = existing.reduce((s, q) => s + q.points_awarded, 0);
+  if (totalSoFar >= quizCfg.max_points) {
+    // Cap points so they don't exceed max
+    const capped = Math.max(0, quizCfg.max_points - totalSoFar);
+    points = Math.min(points, capped);
+  }
+
+  // 3. Insert result
+  await supabase.from('quiz_results').insert({
+    student_id: studentId,
+    opponent_id: opponentId || 'bot',
+    score,
+    opponent_score: opponentScore,
+    difficulty: difficulty || 'medium',
+    questions_answered: questionsAnswered || 5,
+    correct_answers: correctAnswers || 0,
+    points_awarded: points
+  });
+
+  // 4. Add to rise_points (audit)
+  if (points > 0) {
+    await supabase.from('rise_points').insert({
+      student_id: studentId,
+      category: 'quiz',
+      points: points,
+      reason: `Quiz battle ${isWin ? 'win' : 'participation'}`
+    });
+  }
+
+  return new Response(JSON.stringify({ success: true, points }), { status: 200 });
+}
+// supabase/functions/submitEvaluation/index.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
+
+export async function handler(req) {
+  const { studentId, lecturerId, week, courseCode, teaching, communication, assessment, engagement, comments } = await req.json();
+  if (!studentId || !lecturerId || !week || !courseCode) {
+    return new Response(JSON.stringify({ error: 'Missing required fields' }), { status: 400 });
+  }
+
+  // 1. Check for duplicate (student already evaluated this lecturer this week)
+  const { data: existing } = await supabase
+    .from('evaluations')
+    .select('id')
+    .eq('student_id', studentId)
+    .eq('lecturer_id', lecturerId)
+    .eq('week', week)
+    .single();
+  if (existing) {
+    return new Response(JSON.stringify({ error: 'Already evaluated this lecturer for this week' }), { status: 400 });
+  }
+
+  // 2. Insert evaluation
+  await supabase.from('evaluations').insert({
+    student_id: studentId,
+    lecturer_id: lecturerId,
+    week,
+    course_code: courseCode,
+    teaching_skills: teaching,
+    communication,
+    assessment,
+    engagement,
+    comments
+  });
+
+  // 3. Award evaluation points (will be calculated by RISE score function)
+  // We'll add a placeholder to rise_points (handled by a separate job)
+
+  return new Response(JSON.stringify({ success: true }), { status: 200 });
+}
+// supabase/functions/submitEvaluation/index.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
+
+export async function handler(req) {
+  const { studentId, lecturerId, week, courseCode, teaching, communication, assessment, engagement, comments } = await req.json();
+  if (!studentId || !lecturerId || !week || !courseCode) {
+    return new Response(JSON.stringify({ error: 'Missing required fields' }), { status: 400 });
+  }
+
+  // 1. Check for duplicate (student already evaluated this lecturer this week)
+  const { data: existing } = await supabase
+    .from('evaluations')
+    .select('id')
+    .eq('student_id', studentId)
+    .eq('lecturer_id', lecturerId)
+    .eq('week', week)
+    .single();
+  if (existing) {
+    return new Response(JSON.stringify({ error: 'Already evaluated this lecturer for this week' }), { status: 400 });
+  }
+
+  // 2. Insert evaluation
+  await supabase.from('evaluations').insert({
+    student_id: studentId,
+    lecturer_id: lecturerId,
+    week,
+    course_code: courseCode,
+    teaching_skills: teaching,
+    communication,
+    assessment,
+    engagement,
+    comments
+  });
+
+  // 3. Award evaluation points (will be calculated by RISE score function)
+  // We'll add a placeholder to rise_points (handled by a separate job)
+
+  return new Response(JSON.stringify({ success: true }), { status: 200 });
+}
+// supabase/functions/getLeaderboard/index.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
+
+export async function handler(req) {
+  // 1. Get all students
+  const { data: students } = await supabase
+    .from('students')
+    .select('id, name, programme, avatar_url');
+
+  // 2. For each student, compute their RISE score (reuse logic from getRiseScore)
+  // For efficiency, we could store precomputed scores; here we compute on the fly.
+  const leaderboard = await Promise.all(students.map(async (s) => {
+    // Compute categories (reuse function from getRiseScore)
+    const { total, categories } = await calculateRise(s.id);
+    return { ...s, total, categories };
+  }));
+
+  // Sort descending by total
+  leaderboard.sort((a, b) => b.total - a.total);
+
+  return new Response(JSON.stringify(leaderboard), { status: 200 });
+}
+
+// (copy the calculation logic from getRiseScore)

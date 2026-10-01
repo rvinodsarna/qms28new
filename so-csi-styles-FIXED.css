@@ -1,0 +1,414 @@
+/* ════════════════════════════════════════════════════════════
+   SO-CSI NAVBAR STYLES — Cyber Security & Data Intelligence
+   FIXED: Badge text now shows fully
+   ════════════════════════════════════════════════════════════ */
+
+/* ─── CSS VARIABLES (extend your existing :root) ─── */
+:root {
+  /* So-CSI Neon Palette */
+  --so-csi-mint: #00ff9d;
+  --so-csi-cyan: #00f0ff;
+  --so-csi-violet: #7c3aed;
+  --so-csi-magenta: #ff2d7a;
+  --so-csi-gold: #ffd700;
+
+  /* So-CSI Effects */
+  --so-csi-glow-mint: 0 0 20px rgba(0, 255, 157, 0.4), 0 0 40px rgba(0, 255, 157, 0.12);
+  --so-csi-glow-cyan: 0 0 22px rgba(0, 240, 255, 0.5), 0 0 60px rgba(0, 240, 255, 0.16);
+  --so-csi-nav-height: 72px;
+}
+
+/* ─── NAVBAR CONTAINER ─── */
+.navbar.so-csi-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: var(--so-csi-nav-height);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  background: rgba(5, 5, 16, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.12);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(0, 240, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 240, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar.so-csi-nav.scrolled {
+  height: 64px;
+  background: rgba(5, 5, 16, 0.96);
+  backdrop-filter: blur(24px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(0, 240, 255, 0.1);
+}
+
+/* ─── HAMBURGER MENU (MOBILE) ─── */
+.navbar.so-csi-nav .nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  color: #eaf0ff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar.so-csi-nav .nav-toggle:hover {
+  background: rgba(0, 240, 255, 0.08);
+  border-color: var(--so-csi-cyan);
+  box-shadow: var(--so-csi-glow-cyan);
+}
+
+/* ─── SO-CSI BADGE — FIXED TEXT VISIBILITY ─── */
+.navbar.so-csi-nav .so-csi-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: rgba(0, 255, 157, 0.06);
+  border: 1px solid rgba(0, 255, 157, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  box-shadow: 
+    var(--so-csi-glow-mint),
+    inset 0 0 12px rgba(0, 255, 157, 0.04);
+  animation: soCsiPulseBadge 3s ease-in-out infinite;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  margin-right: 8px;
+  /* Allow badge to grow with content */
+  flex-shrink: 0;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+
+.navbar.so-csi-nav .so-csi-badge:hover {
+  background: rgba(0, 255, 157, 0.1);
+  border-color: rgba(0, 255, 157, 0.45);
+  box-shadow: 
+    0 0 35px rgba(0, 255, 157, 0.25),
+    inset 0 0 20px rgba(0, 255, 157, 0.1);
+  transform: scale(1.02);
+}
+
+.navbar.so-csi-nav .so-csi-badge::before {
+  content: '◆';
+  font-size: 14px;
+  color: var(--so-csi-mint);
+  text-shadow: 0 0 12px rgba(0, 255, 157, 0.6);
+  animation: soCsiSpinIcon 8s linear infinite;
+}
+
+@keyframes soCsiPulseBadge {
+  0%, 100% {
+    box-shadow: var(--so-csi-glow-mint), inset 0 0 12px rgba(0, 255, 157, 0.04);
+  }
+  50% {
+    box-shadow: 
+      0 0 32px rgba(0, 255, 157, 0.22),
+      inset 0 0 18px rgba(0, 255, 157, 0.08);
+  }
+}
+
+@keyframes soCsiSpinIcon {
+  to { transform: rotate(360deg); }
+}
+
+/* FIXED: Badge text now shows fully */
+.navbar.so-csi-nav .badge-text {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--so-csi-mint);
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 255, 157, 0.4);
+  white-space: nowrap;
+  /* REMOVED: max-width, overflow, text-overflow that were cutting text */
+}
+
+/* ─── NAVIGATION LINKS ─── */
+.navbar.so-csi-nav .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  border-radius: 12px;
+  padding: 4px;
+  /* Allow nav-links to shrink on smaller screens */
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.navbar.so-csi-nav .nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: #9fb0d0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.navbar.so-csi-nav .nav-item .icon {
+  font-size: 16px;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+}
+
+/* Hover State */
+.navbar.so-csi-nav .nav-item:hover {
+  background: rgba(0, 240, 255, 0.08);
+  color: var(--so-csi-cyan);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.12);
+}
+
+.navbar.so-csi-nav .nav-item:hover .icon {
+  opacity: 1;
+  transform: scale(1.1);
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+}
+
+/* Active State */
+.navbar.so-csi-nav .nav-item.active {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(124, 58, 237, 0.12));
+  color: var(--so-csi-cyan);
+  box-shadow: 
+    0 0 24px rgba(0, 240, 255, 0.2),
+    inset 0 0 16px rgba(0, 240, 255, 0.06);
+}
+
+.navbar.so-csi-nav .nav-item.active .icon {
+  animation: soCsiPulseIcon 2s ease-in-out infinite;
+}
+
+@keyframes soCsiPulseIcon {
+  0%, 100% { text-shadow: 0 0 12px rgba(0, 240, 255, 0.6); }
+  50% { text-shadow: 0 0 20px rgba(0, 240, 255, 0.9); }
+}
+
+/* Accent Colors */
+.navbar.so-csi-nav .nav-item[data-accent="cyan"]:hover {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--so-csi-cyan);
+}
+
+.navbar.so-csi-nav .nav-item[data-accent="violet"]:hover {
+  background: rgba(124, 58, 237, 0.1);
+  color: var(--so-csi-violet);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
+}
+
+.navbar.so-csi-nav .nav-item[data-accent="magenta"]:hover {
+  background: rgba(255, 45, 122, 0.1);
+  color: var(--so-csi-magenta);
+  box-shadow: 0 0 20px rgba(255, 45, 122, 0.15);
+}
+
+.navbar.so-csi-nav .nav-item[data-accent="gold"]:hover {
+  background: rgba(255, 215, 0, 0.1);
+  color: var(--so-csi-gold);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+.navbar.so-csi-nav .nav-item[data-accent="green"]:hover {
+  background: rgba(0, 255, 157, 0.1);
+  color: var(--so-csi-mint);
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.15);
+}
+
+/* ─── USER PROFILE ─── */
+.navbar.so-csi-nav .user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 14px 5px 5px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.navbar.so-csi-nav .user-profile:hover {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(0, 240, 255, 0.25);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+}
+
+.navbar.so-csi-nav .user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--so-csi-cyan), var(--so-csi-violet));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: #020617;
+  box-shadow: var(--so-csi-glow-cyan);
+}
+
+.navbar.so-csi-nav .user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navbar.so-csi-nav .user-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #eaf0ff;
+}
+
+.navbar.so-csi-nav .user-role {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--so-csi-gold);
+}
+
+/* ─── MOBILE NAVIGATION ─── */
+.navbar.so-csi-nav .mobile-nav {
+  position: fixed;
+  top: var(--so-csi-nav-height);
+  left: 0;
+  right: 0;
+  background: rgba(5, 5, 16, 0.98);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.12);
+  padding: 16px 24px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+.navbar.so-csi-nav .mobile-nav.open {
+  display: flex;
+  animation: soCsiSlideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes soCsiSlideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.navbar.so-csi-nav .mobile-nav .nav-item {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  justify-content: flex-start;
+}
+
+.navbar.so-csi-nav .mobile-nav .nav-item:hover {
+  background: rgba(0, 240, 255, 0.08);
+  border-color: var(--so-csi-cyan);
+}
+
+/* ─── RESPONSIVE BREAKPOINTS — FIXED ─── */
+@media (max-width: 1200px) {
+  .navbar.so-csi-nav {
+    padding: 0 16px;
+  }
+
+  .navbar.so-csi-nav .badge-text {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .navbar.so-csi-nav .nav-item {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navbar.so-csi-nav .badge-text {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .navbar.so-csi-nav .nav-item {
+    padding: 9px 11px;
+    font-size: 11px;
+  }
+
+  .navbar.so-csi-nav .nav-item .icon {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 868px) {
+  .navbar.so-csi-nav .nav-toggle {
+    display: block;
+  }
+
+  .navbar.so-csi-nav .nav-links {
+    display: none;
+  }
+
+  .navbar.so-csi-nav .user-profile {
+    display: none;
+  }
+
+  .navbar.so-csi-nav .so-csi-badge {
+    margin-left: auto;
+  }
+
+  .navbar.so-csi-nav .badge-text {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 520px) {
+  .navbar.so-csi-nav {
+    padding: 0 12px;
+  }
+
+  .navbar.so-csi-nav .so-csi-badge {
+    padding: 8px 12px;
+  }
+
+  .navbar.so-csi-nav .badge-text {
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* ─── ACCESSIBILITY ─── */
+.navbar.so-csi-nav .nav-item:focus-visible,
+.navbar.so-csi-nav .nav-toggle:focus-visible,
+.navbar.so-csi-nav .user-profile:focus-visible {
+  outline: 2px solid var(--so-csi-cyan);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.2);
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="So-CSI — School of Cyber Security & Data Intelligence | Responsive Cyberpunk Navbar" />
+  <title>So-CSI — School of Cyber Security & Data Intelligence</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="so-csi-styles.css">
+</head>
+<body>
+  <!-- Background Effects -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <!-- Mobile Toggle -->
+    <button class="nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle navigation">
+      ☰
+    </button>
+
+    <!-- So-CSI Badge -->
+    <div class="so-csi-badge">
+      <span class="badge-text">So-CSI — SCHOOL OF CYBER SECURITY & DATA INTELLIGENCE</span>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+      <a href="#" class="nav-item active" data-accent="cyan">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-accent="violet">
+        <span class="icon">🛡️</span>
+        <span>Security</span>
+      </a>
+      <a href="#" class="nav-item" data-accent="magenta">
+        <span class="icon">📈</span>
+        <span>Analytics</span>
+      </a>
+      <a href="#" class="nav-item" data-accent="gold">
+        <span class="icon">📁</span>
+        <span>Documents</span>
+      </a>
+      <a href="#" class="nav-item" data-accent="green">
+        <span class="icon">🌐</span>
+        <span>Live Feed</span>
+      </a>
+    </div>
+
+    <!-- User Profile -->
+    <div class="user-profile">
+      <div class="user-avatar">VS</div>
+      <div class="user-info">
+        <div class="user-name">Vinod Sarna</div>
+        <div class="user-role">Administrator</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#" class="nav-item" data-accent="cyan">
+      <span class="icon">📊</span>
+      <span>Dashboard</span>
+    </a>
+    <a href="#" class="nav-item" data-accent="violet">
+      <span class="icon">🛡️</span>
+      <span>Security</span>
+    </a>
+    <a href="#" class="nav-item" data-accent="magenta">
+      <span class="icon">📈</span>
+      <span>Analytics</span>
+    </a>
+    <a href="#" class="nav-item" data-accent="gold">
+      <span class="icon">📁</span>
+      <span>Documents</span>
+    </a>
+    <a href="#" class="nav-item" data-accent="green">
+      <span class="icon">🌐</span>
+      <span>Live Feed</span>
+    </a>
+  </div>
+
+  <!-- Demo Content -->
+  <main class="demo-content">
+    <div class="demo-card">
+      <h2>◆ So-CSI Responsive Navbar</h2>
+      <p>
+        This modular navigation component features the So-CSI cyber-security aesthetic with neon glow effects, 
+        Space Grotesk typography, and responsive design. The navbar includes hover states with color-coded 
+        accent glows (cyan, violet, magenta, gold, green), a pulsing mint-green department badge, and smooth 
+        animations throughout.
+      </p>
+    </div>
+
+    <div class="demo-card">
+      <h2>Key Features</h2>
+      <p>
+        • <strong>Neon Glow Effects:</strong> Multi-layered box-shadows create authentic cyberpunk aesthetics<br>
+        • <strong>Space Grotesk Typography:</strong> Bold, modern headings with Inter for body text<br>
+        • <strong>Glassmorphism:</strong> Backdrop blur with semi-transparent backgrounds<br>
+        • <strong>Responsive Design:</strong> Mobile-first with hamburger menu and collapsible navigation<br>
+        • <strong>Hover States:</strong> Each nav item has unique accent color on hover<br>
+        • <strong>Accessibility:</strong> Focus-visible states with cyan outlines<br>
+        • <strong>Smooth Animations:</strong> Cubic-bezier transitions for natural motion
+      </p>
+    </div>
+
+    <div class="demo-card">
+      <h2>Integration with QMS RISE</h2>
+      <p>
+        Copy the HTML structure and CSS into your QMS RISE project. The navbar uses CSS variables for easy theming. 
+        Customize colors in the <code>:root</code> section. The component is fully modular—remove or add 
+        nav items as needed. For QMS RISE integration, replace your existing <code>.topbar</code> with this 
+        enhanced version.
+      </p>
+    </div>
+  </main>
+
+  <script src="so-csi-script.js"></script>
+</body>
+</html>

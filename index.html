@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="hosting-provider" content="Netlify">
+    <meta name="netlify-deploy" content="https://netlify.new/?utm_campaign=ai-legible&amp;utm_source=meta&amp;utm_medium=referral&amp;utm_id=4576652a-99c2-4fe2-9505-699192a5ab11">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>UNIMY QMS RISE v25.0 — Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./so-csi-styles.css">
+</head>
+<body>
+
+    <!-- ─── SPLASH SCREEN ─── -->
+    <div id="splash-screen">
+        <div class="splash-bg" id="splash-bg"></div>
+        <video id="splash-video" autoplay playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;filter:brightness(0.75) saturate(1.1);">
+            <source src="RISE_clean.mp4" type="video/mp4">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%23050510'/%3E%3Ctext x='50%25' y='50%25' font-family='sans-serif' font-size='24' fill='%2300f0ff' text-anchor='middle' dy='.3em'%3EUNIMY QMS RISE%3C/text%3E%3C/svg%3E" style="width:100%;height:100%;object-fit:cover;" />
+        </video>
+        <div class="splash-progress">
+            <div class="bar" id="splash-progress-bar"></div>
+        </div>
+        <button class="splash-skip" id="splash-skip-btn">Skip Intro</button>
+        <button class="splash-unmute" id="splash-unmute-btn" style="display:none;">🔇 Tap for sound</button>
+        <div class="splash-version">UNIVERSITY MALAYSIA OF COMPUTER SCIENCE &amp; ENGINEERING</div>
+    </div>
+
+    <!-- ─── CREDITS SCREEN ─── -->
+    <div id="credits-screen">
+        <div class="credits-grid-bg"></div>
+        <div class="credits-frame">
+            <div class="credits-hud">
+                <span class="hud-corner tl"></span>
+                <span class="hud-corner tr"></span>
+                <span class="hud-corner bl"></span>
+                <span class="hud-corner br"></span>
+                <span class="credits-scanline"></span>
+                <video src="./vinod_sarna_luxury_gold_shimmer.mp4" class="credits-card-img" playsinline autoplay muted loop>
+                </video>
+            </div>
+            <div class="credits-status"><span class="credits-status-dot"></span>School of Cyber Security &amp; Data Intelligence (So-CSI)</div>
+            <button type="button" id="credits-continue-btn" class="credits-continue">Continue&nbsp;→</button>
+        </div>
+    </div>
+
+    <!-- ─── LOGOUT VIDEO OVERLAY ─── -->
+    <div id="logout-video-overlay">
+        <video id="logout-video" playsinline muted>
+            <source src="RISE-QMS-LOGO2.mp4" type="video/mp4">
+        </video>
+        <button type="button" class="logout-video-skip" id="logout-video-skip-btn">Skip</button>
+    </div>
+
+    <canvas id="neural-canvas"></canvas>
+
+    <div id="app"></div>
+    <div id="toast-container"></div>
+    <div id="modal-root"></div>
+    <div id="ai-fab-root"></div>
+
+  <!-- ... your existing head and body content ... -->
+
+    <!-- Supabase JS client (global `supabase` object) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Your secure config (loads secrets + initializes window.supabase) -->
+    <script src="./config.js"></script>
+
+    <!-- Main app logic -->
+    <script src="./app.js"></script>
+
+    <!-- AI FAQ assistant (uses window.supabase) -->
+    <script src="./ai-faq.js"></script>
+
+    <!-- Other scripts -->
+    <script src="./app-extra.js"></script>
+    <script src="./face-auth.js"></script>
+
+</body>
+</html>
