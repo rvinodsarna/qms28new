@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UNIMY QMS RISE — Dean Command Center</title>
+    <title>UNIMY QMS RISE â€” Dean Command Center</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
@@ -479,6 +479,7 @@
             .user-meta { display: none; }
         }
     </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="bg"></div>
@@ -488,7 +489,7 @@
 
     <!-- Auth gate: shown while verifying Dean role -->
     <div id="auth-gate">
-        <div><span class="spin2"></span>VERIFYING DEAN AUTHORISATION…</div>
+        <div><span class="spin2"></span>VERIFYING DEAN AUTHORISATIONâ€¦</div>
     </div>
 
     <!-- App shell: hidden until auth gate passes -->
@@ -498,7 +499,7 @@
                 <span class="dot">Q</span>
                 <div>
                     UNIMY QMS RISE
-                    <small>DEAN COMMAND CENTER · v25</small>
+                    <small>DEAN COMMAND CENTER Â· v25</small>
                 </div>
             </div>
             <div class="clock" id="clock"></div>
@@ -513,19 +514,19 @@
         </header>
         <div class="layout">
             <main class="main" id="main">
-                <div class="loading"><div class="spin"></div>CONNECTING TO SUPABASE…</div>
+                <div class="loading"><div class="spin"></div>CONNECTING TO SUPABASEâ€¦</div>
             </main>
         </div>
-        <footer>UNIMY QMS RISE v25 · DEAN COMMAND CENTER · LIVE DATA · SECURED</footer>
+        <footer>UNIMY QMS RISE v25 Â· DEAN COMMAND CENTER Â· LIVE DATA Â· SECURED</footer>
     </div>
 
     <script>
     (async function () {
         "use strict";
 
-        // ──────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         // Small helpers
-        // ──────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         const $ = (id) => document.getElementById(id);
         const esc = (v) =>
             v == null
@@ -541,14 +542,14 @@
             const gate = $("auth-gate");
             if (gate) {
                 gate.innerHTML =
-                    '<div style="color:#ff2d7a;">' + esc(message) + "<br><small style='color:#9fb0d0;letter-spacing:1px;'>REDIRECTING…</small></div>";
+                    '<div style="color:#ff2d7a;">' + esc(message) + "<br><small style='color:#9fb0d0;letter-spacing:1px;'>REDIRECTINGâ€¦</small></div>";
             }
             setTimeout(() => window.location.replace("/"), 1200);
         }
 
-        // ──────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         // Wait for shared Supabase client from config.js
-        // ──────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         let client;
         try {
             await window.QMS_READY;
@@ -560,9 +561,9 @@
             return;
         }
 
-        // ──────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         // Auth gate: require a valid session AND role === 'dean'
-        // ──────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         let deanUser;
         try {
             const { data: { session } } = await client.auth.getSession();
@@ -595,19 +596,19 @@
             return;
         }
 
-        // ──────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         // Everything below runs ONLY for verified deans.
         // `sb` is an alias so the route code stays readable.
-        // ──────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         const sb = client;
 
-        // ─────────────── Logout ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Logout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         window.__logout = async function () {
             try { await sb.auth.signOut(); } catch (_) {}
             window.location.replace("/");
         };
 
-        // ─────────────── Utilities ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Utilities â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         function countUp(node, target) {
             if (!node) return;
             const start = performance.now();
@@ -625,7 +626,7 @@
             return (
                 '<div class="kpi-card ' + (cls || "") + '">' +
                 '<div class="kpi-ico">' + ico + "</div>" +
-                '<div class="kpi-val" id="kpi-' + id + '">…</div>' +
+                '<div class="kpi-val" id="kpi-' + id + '">â€¦</div>' +
                 '<div class="kpi-lbl">' + lbl + "</div>" +
                 "</div>"
             );
@@ -636,7 +637,7 @@
                 '<div class="hero">' +
                 '<div class="eyebrow">' + esc(tag) + "</div>" +
                 "<h1>" + esc(title) + "</h1>" +
-                '<div class="type">Live Supabase · <b>real data</b></div>' +
+                '<div class="type">Live Supabase Â· <b>real data</b></div>' +
                 "</div>"
             );
         }
@@ -673,7 +674,7 @@
             } catch (_) { return []; }
         }
 
-        // ─────────────── Clock ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Clock â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         function startClock() {
             const el = $("clock");
             if (!el) return;
@@ -689,7 +690,7 @@
             setInterval(tick, 1000);
         }
 
-        // ─────────────── Neural background ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Neural background â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         (function neuralBackground() {
             const c = $("neural");
             if (!c) return;
@@ -742,14 +743,14 @@
             })();
         })();
 
-        // ─────────────── Nav ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Nav â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         const NAV_ITEMS = [
-            { id: "overview", icon: "📊", label: "Overview" },
-            { id: "evaluations", icon: "🛡️", label: "Evaluations" },
-            { id: "academic", icon: "🎓", label: "Academic" },
-            { id: "quality", icon: "🧪", label: "Quality & Docs" },
-            { id: "security", icon: "🔐", label: "Security" },
-            { id: "live", icon: "🌐", label: "Live Feed" },
+            { id: "overview", icon: "ðŸ“Š", label: "Overview" },
+            { id: "evaluations", icon: "ðŸ›¡ï¸", label: "Evaluations" },
+            { id: "academic", icon: "ðŸŽ“", label: "Academic" },
+            { id: "quality", icon: "ðŸ§ª", label: "Quality & Docs" },
+            { id: "security", icon: "ðŸ”", label: "Security" },
+            { id: "live", icon: "ðŸŒ", label: "Live Feed" },
         ];
 
         function buildHorizontalNav(activeId) {
@@ -774,7 +775,7 @@
 
         function route(key) {
             const main = $("main");
-            main.innerHTML = '<div class="loading"><div class="spin"></div>LOADING REAL DATA…</div>';
+            main.innerHTML = '<div class="loading"><div class="spin"></div>LOADING REAL DATAâ€¦</div>';
             const map = {
                 overview: renderOverview,
                 evaluations: renderEvaluations,
@@ -787,11 +788,11 @@
             setTimeout(() => {
                 if (fn) fn(key);
                 else main.innerHTML =
-                    '<div class="empty">⚠️ Section not found</div>';
+                    '<div class="empty">âš ï¸ Section not found</div>';
             }, 120);
         }
 
-        // ─────────────── Chart helpers ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Chart helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         function drawCredits(credits) {
             const c = $("chCredits");
             if (!c) return;
@@ -936,18 +937,18 @@
             });
         }
 
-        // ─────────────── ROUTES ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         async function renderOverview(active) {
             const content =
-                hero("◆ Academic Quality · Dean", "Dean Command Center") +
+                hero("â—† Academic Quality Â· Dean", "Dean Command Center") +
                 '<div class="kpi-grid">' +
-                    kpiCard("stu", "🎓", "Total Students", "g") +
-                    kpiCard("fac", "🧑‍🏫", "Faculty & Staff", "m") +
-                    kpiCard("eval", "📈", "Evaluations", "w") +
-                    kpiCard("comp", "⚠️", "Open Complaints", "") +
+                    kpiCard("stu", "ðŸŽ“", "Total Students", "g") +
+                    kpiCard("fac", "ðŸ§‘â€ðŸ«", "Faculty & Staff", "m") +
+                    kpiCard("eval", "ðŸ“ˆ", "Evaluations", "w") +
+                    kpiCard("comp", "âš ï¸", "Open Complaints", "") +
                 "</div>" +
-                chWrap("chCredits", "Credit Transfer Pipeline", "TCQMS · REAL") +
+                chWrap("chCredits", "Credit Transfer Pipeline", "TCQMS Â· REAL") +
                 '<div class="grid-2">' +
                     chWrap("chComps", "Complaints by Status", "REAL") +
                     chWrap("chTrend", "Weekly Activity Trend", "REAL") +
@@ -980,23 +981,23 @@
 
         async function renderEvaluations(active) {
             renderPage(active || "evaluations",
-                hero("🛡️ Course Evaluations", "Evaluation Intelligence"));
+                hero("ðŸ›¡ï¸ Course Evaluations", "Evaluation Intelligence"));
 
             const evs = await rows("evaluations", "score,created_at");
             const n = evs.length;
             const scores = evs.filter((r) => typeof r.score === "number").map((r) => r.score);
             const avg = scores.length
                 ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10
-                : "—";
+                : "â€”";
             const low = scores.filter((s) => s < 3).length;
 
             const main = $("main");
             const container = document.createElement("div");
             container.innerHTML =
                 '<div class="kpi-grid">' +
-                    kpiCard("avg", "⭐", "Average Score (" + scores.length + " rated)", "g") +
-                    kpiCard("n", "📊", "Total Responses", "") +
-                    kpiCard("low", "📉", "Below Target (<3)", "m") +
+                    kpiCard("avg", "â­", "Average Score (" + scores.length + " rated)", "g") +
+                    kpiCard("n", "ðŸ“Š", "Total Responses", "") +
+                    kpiCard("low", "ðŸ“‰", "Below Target (<3)", "m") +
                 "</div>" +
                 chWrap("chEvalTrend", "Response Trend", "REAL");
             main.appendChild(container);
@@ -1040,7 +1041,7 @@
         }
 
         async function renderAcademic(active) {
-            renderPage(active || "academic", hero("🎓 Academic & Study Plan", "Academic Pulse"));
+            renderPage(active || "academic", hero("ðŸŽ“ Academic & Study Plan", "Academic Pulse"));
 
             const stu = await rows("students", "programme");
             const g = group(stu, "programme");
@@ -1050,10 +1051,10 @@
             const container = document.createElement("div");
             container.innerHTML =
                 '<div class="kpi-grid">' +
-                    kpiCard("enrol", "🎓", "Enrolled Students", "g") +
-                    kpiCard("prog", "🗂️", "Programmes", "") +
-                    kpiCard("ql", "🧠", "Quiz Battles", "m") +
-                    kpiCard("att", "✅", "Attendance Logs", "") +
+                    kpiCard("enrol", "ðŸŽ“", "Enrolled Students", "g") +
+                    kpiCard("prog", "ðŸ—‚ï¸", "Programmes", "") +
+                    kpiCard("ql", "ðŸ§ ", "Quiz Battles", "m") +
+                    kpiCard("att", "âœ…", "Attendance Logs", "") +
                 "</div>" +
                 '<div class="card"><h3>Programme Distribution <small>ACTUAL</small></h3>' +
                 '<div style="height:250px"><canvas id="chProg"></canvas></div></div>';
@@ -1089,7 +1090,7 @@
         }
 
         async function renderQuality(active) {
-            renderPage(active || "quality", hero("🧪 Quality, Documents & Risk", "Quality Assurance Grid"));
+            renderPage(active || "quality", hero("ðŸ§ª Quality, Documents & Risk", "Quality Assurance Grid"));
 
             const [docs] = await Promise.all([cnt("documents")]);
             const comps = await rows("complaints", "status");
@@ -1100,9 +1101,9 @@
             const container = document.createElement("div");
             container.innerHTML =
                 '<div class="kpi-grid">' +
-                    kpiCard("doc", "📄", "Documents", "") +
-                    kpiCard("res", "✔️", "Complaints Resolved", "g") +
-                    kpiCard("open", "⚠️", "Open Complaints", "m") +
+                    kpiCard("doc", "ðŸ“„", "Documents", "") +
+                    kpiCard("res", "âœ”ï¸", "Complaints Resolved", "g") +
+                    kpiCard("open", "âš ï¸", "Open Complaints", "m") +
                 "</div>" +
                 '<div class="card"><h3>Recent Complaints <small>LIVE TABLE</small></h3>' +
                 '<ul class="feed" id="compFeed"></ul></div>';
@@ -1130,37 +1131,37 @@
 
         function renderSecurity(active) {
             const content =
-                hero("🔐 Security Details v2", "Dean-Only Operational View") +
+                hero("ðŸ” Security Details v2", "Dean-Only Operational View") +
                 '<div class="card" style="border-color:rgba(0,240,255,0.25);">' +
-                '<h3>🔐 Security Details v2 <small>Dean-Only · QMS RISE</small></h3>' +
+                '<h3>ðŸ” Security Details v2 <small>Dean-Only Â· QMS RISE</small></h3>' +
                 '<div style="margin-bottom:10px;font-size:11px;color:var(--ink-muted);font-family:var(--font-m);">' +
                 "All metrics reflect real recorded information when available. Uninstrumented items shown transparently to maintain audit integrity." +
                 "</div>" +
                 '<div class="sec-grid">' +
 
-                '<div class="sec-card"><div class="sec-label">👥 Registered Accounts</div>' +
-                '<div class="sec-value"><span style="color:var(--cyan);">—</span></div>' +
+                '<div class="sec-card"><div class="sec-label">ðŸ‘¥ Registered Accounts</div>' +
+                '<div class="sec-value"><span style="color:var(--cyan);">â€”</span></div>' +
                 '<div class="sec-sub">Live count requires authorised account access</div>' +
                 '<div style="margin-top:6px;display:flex;gap:12px;flex-wrap:wrap;">' +
                 '<div><span style="font-size:10px;color:var(--ink-subtle);">Active Sessions</span><br>' +
-                '<span style="font-size:14px;font-weight:600;color:var(--green);">● Monitoring enabled</span></div>' +
+                '<span style="font-size:14px;font-weight:600;color:var(--green);">â— Monitoring enabled</span></div>' +
                 "</div></div>" +
 
-                '<div class="sec-card"><div class="sec-label">🛡️ Access Controls</div>' +
+                '<div class="sec-card"><div class="sec-label">ðŸ›¡ï¸ Access Controls</div>' +
                 '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-top:4px;">' +
                 '<div><span style="font-size:10px;color:var(--ink-subtle);">Auth Method</span><br>' +
                 '<span style="font-weight:600;color:var(--cyan);">Supabase Auth</span></div>' +
                 '<div><span style="font-size:10px;color:var(--ink-subtle);">Role-Based Access</span><br>' +
-                '<span style="font-weight:600;color:var(--green);">● Active</span></div>' +
+                '<span style="font-weight:600;color:var(--green);">â— Active</span></div>' +
                 "</div></div>" +
 
-                '<div class="sec-card"><div class="sec-label">📋 Review Items</div>' +
+                '<div class="sec-card"><div class="sec-label">ðŸ“‹ Review Items</div>' +
                 '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-top:4px;">' +
                 '<div><span style="font-size:10px;color:var(--ink-subtle);">Compliance Status</span><br>' +
-                '<span style="font-weight:600;color:var(--cyan);">🟢 Operational</span></div>' +
+                '<span style="font-weight:600;color:var(--cyan);">ðŸŸ¢ Operational</span></div>' +
                 "</div></div>" +
 
-                '<div class="sec-card"><div class="sec-label">⚠️ Control Checks</div>' +
+                '<div class="sec-card"><div class="sec-label">âš ï¸ Control Checks</div>' +
                 '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-top:4px;">' +
                 '<div><span style="font-size:10px;color:var(--ink-subtle);">Protected Environment</span><br>' +
                 '<span style="font-weight:600;color:var(--cyan);">QMS Verified</span></div>' +
@@ -1170,26 +1171,26 @@
                 '<hr class="sec-divider" />' +
                 '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">' +
                 '<span style="font-size:11px;color:var(--ink-muted);font-family:var(--font-m);">' +
-                "📊 Dean-only operational view.</span>" +
+                "ðŸ“Š Dean-only operational view.</span>" +
                 '<span class="sec-badge operational">QMS RISE Security</span> ' +
-                '<span class="sec-badge active" style="background:rgba(255,45,122,0.1);color:var(--magenta);border-color:rgba(255,45,122,0.2);">Confidential · Dean Access Only</span>' +
+                '<span class="sec-badge active" style="background:rgba(255,45,122,0.1);color:var(--magenta);border-color:rgba(255,45,122,0.2);">Confidential Â· Dean Access Only</span>' +
                 "</div>" +
                 "</div>";
 
             renderPage(active || "security", content);
         }
 
-        // ─────────────── LIVE FEED ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ LIVE FEED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         let liveChan = null;
         let feedTimer = null;
 
         async function renderLive(active) {
-            renderPage(active || "live", hero("🌐 Real-Time Activity Stream", "Live Intelligence Feed"));
+            renderPage(active || "live", hero("ðŸŒ Real-Time Activity Stream", "Live Intelligence Feed"));
 
             const main = $("main");
             const container = document.createElement("div");
             container.innerHTML =
-                '<div class="card"><h3>Live Feed <small>REALTIME · SUPABASE</small></h3>' +
+                '<div class="card"><h3>Live Feed <small>REALTIME Â· SUPABASE</small></h3>' +
                 '<ul class="feed" id="liveFeed"></ul></div>';
             main.appendChild(container);
 
@@ -1226,7 +1227,7 @@
                         '<li class="' + (it.cls || "") + '"><div>' +
                         '<div class="f-t">' + esc(it.type) + "</div>" +
                         '<div class="f-s">' + esc(it.detail) +
-                        (it.date ? " · " + esc(new Date(it.date).toLocaleDateString("en-GB")) : "") +
+                        (it.date ? " Â· " + esc(new Date(it.date).toLocaleDateString("en-GB")) : "") +
                         "</div></div></li>")
                     .join("");
             }
@@ -1247,7 +1248,7 @@
             feedTimer = setInterval(seed, 15000);
         }
 
-        // ─────────────── Boot ───────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Boot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         $("auth-gate").remove();
         $("app").style.display = "block";
 
@@ -1267,3 +1268,4 @@
     </script>
 </body>
 </html>
+
