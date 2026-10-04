@@ -12,16 +12,56 @@
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <script src="https://unpkg.com/html5-qrcode" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js" defer></script>
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="./so-csi-styles.css">
+    <!-- Heavy CDN libs loaded after page is idle — none needed for splash/login -->
+    <script>
+      window.addEventListener('load', function () {
+        var heavy = [
+          { url: 'https://cdn.jsdelivr.net/npm/chart.js' },
+          { url: 'https://unpkg.com/html5-qrcode' },
+          { url: 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js' },
+          { url: 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js' },
+          { url: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+            after: function () {
+              if (window.pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc =
+                  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+              }
+            }
+          },
+          { url: 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js' },
+          { url: 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js' },
+          { url: 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js' },
+          { url: './face-auth.js',
+            after: function () {
+              // face-auth.js is now defined — re-init the login page's face login if visible
+              if (typeof window.__startFaceLoginFlow === 'function') {
+                try { window.__startFaceLoginFlow(); } catch (e) { console.warn('face-auth init:', e); }
+              }
+            }
+          }
+        ];
+        var i = 0;
+        function next() {
+          if (i >= heavy.length) return;
+          var item = heavy[i++];
+          var s = document.createElement('script');
+          s.src = item.url;
+          s.onload = function () {
+            if (typeof item.after === 'function') { try { item.after(); } catch (e) { console.warn(e); } }
+            next();
+          };
+          s.onerror = next;
+          document.head.appendChild(s);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(next, { timeout: 2500 });
+        } else {
+          setTimeout(next, 300);
+        }
+      });
+    </script>
 </head>
 <body>
 
@@ -89,7 +129,5 @@
 
     <!-- Other scripts -->
     <script src="./app-extra.js" defer></script>
-    <script src="./face-auth.js" defer></script>
-
-</body>
+    </body>
 </html>
