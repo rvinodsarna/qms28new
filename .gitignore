@@ -1,0 +1,9 @@
+*.bak
+*.zip
+import_data.py
+requirements.txt
+README_DEPLOYMENT.txt
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
