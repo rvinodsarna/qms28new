@@ -1,0 +1,11 @@
+.git
+.gitignore
+.gitattributes
+wrangler.toml
+worker.js
+netlify.toml
+README.md
+*.sql
+*.csv
+*.xlsx
+*.md
