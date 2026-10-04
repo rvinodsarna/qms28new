@@ -1,11 +1,35 @@
-.git
+# ── Dev / source files — never serve to the public ──
+.wrangler/
+.git/
 .gitignore
 .gitattributes
+node_modules/
+
+# ── Build / config files ──
 wrangler.toml
-worker.js
 netlify.toml
-README.md
+worker.js
+package.json
+package-lock.json
+
+# ── Docs and metadata ──
+README*
+*.md
+*.txt
+
+# ── Data files ──
 *.sql
 *.csv
 *.xlsx
-*.md
+*.zip
+*.bak
+
+# ── Python / scripts ──
+*.py
+requirements.txt
+
+# ── Dead / legacy code ──
+gemini-proxy.js
+navbar-cleanup.js
+dean_dashboard_patch.js
+dean_dashboard_fix.sql
