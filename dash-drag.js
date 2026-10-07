@@ -1,207 +1,177 @@
-﻿/* dash-drag.js — drag-and-drop reordering for dashboard grids
+﻿/* dash-drag.js — SortableJS-based reordering for
  *   - RISE Categories  (.sd-cats-grid)
  *   - Quick Actions    (.sd-qa-grid)
- *
- * Order is saved per-user in Supabase (table: user_dashboard_layout)
- * with localStorage as a fast cache.
+ * Order persisted per-user in Supabase (user_dashboard_layout) + localStorage cache.
  */
 (function () {
   "use strict";
   if (window.__dashDrag) return;
   window.__dashDrag = true;
 
-  const LS_KEY   = "qms.dashOrder.v1";
-  const TABLE    = "user_dashboard_layout";
-  const SELECTORS = [".sd-cats-grid", ".sd-qa-grid", ".quick-access-grid", ".sd-quick-access"];
+  var LS_KEY = "qms.dashOrder.v1";
+  var TABLE  = "user_dashboard_layout";
+  var layout = {};
+  var hydrated = false;
+  var currentUserId = null;
+  var saveTimer = null;
 
-  let layout = {};
-  let hydrated = false;
-  let currentUserId = null;
-  let saveTimer = null;
-
-  /* ---------- helpers ---------- */
-  function containerKey(container) {
-    const cls = (container.className || "").split(" ").filter(Boolean)[0] || "grid";
-    const scope = container.dataset.scope || "";
-    return scope ? cls + "|" + scope : cls;
+  function containerKey(c) {
+    var cls = (c.className || "").split(" ").filter(Boolean)[0] || "grid";
+    return cls;
   }
-
-  function childKey(el, index) {
-    return (
-      el.dataset.id ||
-      el.dataset.key ||
-      el.getAttribute("data-code") ||
-      el.id ||
-      (el.textContent || "").trim().slice(0, 40) ||
-      ("idx-" + index)
-    );
+  function childKey(el, i) {
+    return el.dataset.id || el.dataset.key || el.dataset.code ||
+           el.id || (el.textContent || "").trim().slice(0, 40) || ("idx-" + i);
   }
-
   function lsLoad() {
     try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; }
     catch (e) { return {}; }
   }
-  function lsSave(obj) {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(obj)); } catch (e) {}
+  function lsSave(o) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(o)); } catch (e) {}
   }
 
-  /* ---------- Supabase ---------- */
-  async function hydrateFromSupabase() {
-    if (hydrated) return;
-    hydrated = true;
+  async function hydrate() {
+    if (hydrated) return; hydrated = true;
     layout = lsLoad();
-
-    const sb = window.qmsSupabase;
-    if (!sb) return;
+    var sb = window.qmsSupabase; if (!sb) return;
     try {
-      const { data: sess } = await sb.auth.getSession();
-      currentUserId = sess && sess.session && sess.session.user && sess.session.user.id;
+      var sess = await sb.auth.getSession();
+      currentUserId = sess && sess.data && sess.data.session && sess.data.session.user && sess.data.session.user.id;
       if (!currentUserId) return;
-
-      const { data, error } = await sb
-        .from(TABLE)
-        .select("layout")
-        .eq("user_id", currentUserId)
-        .maybeSingle();
-
-      if (error) { console.warn("[dash-drag] hydrate error:", error.message); return; }
-      if (data && data.layout && typeof data.layout === "object") {
-        layout = Object.assign({}, layout, data.layout);
+      var res = await sb.from(TABLE).select("layout").eq("user_id", currentUserId).maybeSingle();
+      if (res.error) { console.warn("[dash-drag] hydrate:", res.error.message); return; }
+      if (res.data && res.data.layout && typeof res.data.layout === "object") {
+        layout = Object.assign({}, layout, res.data.layout);
         lsSave(layout);
         console.log("[dash-drag] hydrated from Supabase");
-        document.querySelectorAll(SELECTORS.join(",")).forEach(applyOrder);
+        document.querySelectorAll(".sd-cats-grid, .sd-qa-grid").forEach(applyOrder);
       }
-    } catch (e) {
-      console.warn("[dash-drag] hydrate failed:", e);
-    }
+    } catch (e) { console.warn("[dash-drag] hydrate failed:", e); }
   }
 
-  async function saveToSupabase() {
-    const sb = window.qmsSupabase;
+  async function save() {
+    lsSave(layout);
+    var sb = window.qmsSupabase;
     if (!sb || !currentUserId) return;
     try {
-      const payload = {
+      var res = await sb.from(TABLE).upsert({
         user_id: currentUserId,
         layout: layout,
         updated_at: new Date().toISOString()
-      };
-      const { error } = await sb.from(TABLE).upsert(payload, { onConflict: "user_id" });
-      if (error) console.warn("[dash-drag] save error:", error.message);
-    } catch (e) {
-      console.warn("[dash-drag] save failed:", e);
-    }
+      }, { onConflict: "user_id" });
+      if (res.error) console.warn("[dash-drag] save:", res.error.message);
+    } catch (e) { console.warn("[dash-drag] save failed:", e); }
   }
-
   function scheduleSave() {
     if (saveTimer) clearTimeout(saveTimer);
-    saveTimer = setTimeout(function () {
-      lsSave(layout);
-      saveToSupabase();
-    }, 500);
+    saveTimer = setTimeout(save, 500);
   }
 
-  /* ---------- order ---------- */
   function applyOrder(container) {
-    const key = containerKey(container);
-    const order = layout[key];
+    var order = layout[containerKey(container)];
     if (!order || !order.length) return;
-
-    const children = Array.from(container.children);
-    if (!children.length) return;
-
-    const map = new Map();
-    children.forEach(function (el, i) { map.set(childKey(el, i), el); });
-
-    const used = new Set();
+    var kids = Array.prototype.slice.call(container.children);
+    if (!kids.length) return;
+    var map = {};
+    kids.forEach(function (el, i) { map[childKey(el, i)] = el; });
+    var used = {};
     order.forEach(function (k) {
-      const el = map.get(k);
-      if (el) { container.appendChild(el); used.add(k); }
+      if (map[k]) { container.appendChild(map[k]); used[k] = 1; }
     });
-    children.forEach(function (el, i) {
-      const k = childKey(el, i);
-      if (!used.has(k)) container.appendChild(el);
+    kids.forEach(function (el, i) {
+      var k = childKey(el, i);
+      if (!used[k]) container.appendChild(el);
     });
   }
 
   function persistOrder(container) {
-    const key = containerKey(container);
-    const ids = Array.from(container.children).map(function (el, i) { return childKey(el, i); });
-    layout[key] = ids;
+    layout[containerKey(container)] =
+      Array.prototype.slice.call(container.children).map(childKey);
     scheduleSave();
   }
 
-  /* ---------- drag ---------- */
-  let dragEl = null;
-  let dragContainer = null;
-
-  function makeDraggable(el, container) {
-    if (el.dataset.dragReady === "1") return;
-    el.dataset.dragReady = "1";
-    el.setAttribute("draggable", "true");
-    el.style.cursor = "grab";
-    el.style.transition = "transform 0.15s ease, opacity 0.15s ease";
-
-    el.addEventListener("dragstart", function (e) {
-      dragEl = el;
-      dragContainer = container;
-      el.style.opacity = "0.4";
-      el.style.cursor = "grabbing";
-      try {
-        e.dataTransfer.effectAllowed = "move";
-        e.dataTransfer.setData("text/plain", "drag");
-      } catch (err) {}
-    });
-
-    el.addEventListener("dragend", function () {
-      el.style.opacity = "";
-      el.style.cursor = "grab";
-      if (dragContainer) persistOrder(dragContainer);
-      dragEl = null;
-      dragContainer = null;
-    });
-
-    el.addEventListener("dragover", function (e) {
-      e.preventDefault();
-      if (!dragEl || dragEl === el || dragEl.parentElement !== el.parentElement) return;
-      const rect = el.getBoundingClientRect();
-      const after = (e.clientY - rect.top) / rect.height > 0.5;
-      const parent = el.parentElement;
-      if (after) parent.insertBefore(dragEl, el.nextSibling);
-      else parent.insertBefore(dragEl, el);
-    });
+  function sortableReady() {
+    return typeof window.Sortable !== "undefined";
   }
 
-  /* ---------- scan and enhance ---------- */
-  function enhance(container) {
-    // Always ensure every child has drag handlers
-    Array.from(container.children).forEach(function (child) {
-      makeDraggable(child, container);
-    });
-    // Apply saved order
-    applyOrder(container);
-  }
+  function attach() {
+    if (!sortableReady()) return;
+    var u = window.QMS && window.QMS.state && window.QMS.state.user;
+    if (!u || u.role !== "student") return;
 
-  function scan() {
-    SELECTORS.forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (container) {
-        if (!container || container.children.length === 0) return;
-        enhance(container);
+    var cat = document.querySelector(".sd-cats-grid");
+    var qa  = document.querySelector(".sd-qa-grid");
+    if (!cat && !qa) return;
+
+    document.body.setAttribute("data-drag-ready", "1");
+
+    if (cat && !cat.dataset.sortableAttached) {
+      applyOrder(cat);
+      Sortable.create(cat, {
+        animation: 180,
+        delay: 120,
+        delayOnTouchOnly: true,
+        ghostClass: "sd-cat-ghost",
+        chosenClass: "sd-cat-chosen",
+        dragClass: "sd-cat-drag",
+        onEnd: function () { persistOrder(cat); }
       });
-    });
+      cat.dataset.sortableAttached = "1";
+    }
+
+    if (qa && !qa.dataset.sortableAttached) {
+      applyOrder(qa);
+      Sortable.create(qa, {
+        animation: 180,
+        delay: 120,
+        delayOnTouchOnly: true,
+        ghostClass: "sd-qa-ghost",
+        chosenClass: "sd-qa-chosen",
+        dragClass: "sd-qa-drag",
+        onEnd: function () { persistOrder(qa); }
+      });
+      qa.dataset.sortableAttached = "1";
+    }
   }
 
-  /* ---------- init ---------- */
+  function injectStyles() {
+    if (document.getElementById("dash-drag-styles")) return;
+    var s = document.createElement("style");
+    s.id = "dash-drag-styles";
+    s.textContent = [
+      ".sd-cat-card{cursor:grab;transition:box-shadow .15s,transform .15s}",
+      ".sd-cat-card:active{cursor:grabbing}",
+      ".sd-qa-tile{cursor:grab;transition:box-shadow .15s,transform .15s}",
+      ".sd-qa-tile:active{cursor:grabbing}",
+      ".sd-cat-ghost,.sd-qa-ghost{opacity:.25;transform:scale(.97)}",
+      ".sd-cat-chosen,.sd-qa-chosen{box-shadow:0 0 0 1px rgba(0,245,255,.6),0 8px 24px rgba(0,245,255,.25)}",
+      ".sd-cat-drag,.sd-qa-drag{opacity:.95;transform:scale(1.04)}"
+    ].join("\n");
+    document.head.appendChild(s);
+  }
+
+  var pending = false;
+  function scan() {
+    if (pending) return;
+    pending = true;
+    setTimeout(function () { pending = false; attach(); }, 400);
+  }
+
   function start() {
-    hydrateFromSupabase();
-    scan();
-    const obs = new MutationObserver(function () { scan(); });
-    obs.observe(document.body, { childList: true, subtree: true });
-    console.log("[dash-drag] active on", SELECTORS.join(", "));
+    injectStyles();
+    hydrate().then(scan);
+    new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
+    console.log("[dash-drag] Sortable-based loader ready");
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start);
-  } else {
-    start();
-  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+
+  window.resetDashboardOrder = function () {
+    var u = window.QMS && QMS.state && QMS.state.user;
+    if (u) localStorage.removeItem("dash_order_" + u.id);
+    localStorage.removeItem(LS_KEY);
+    location.reload();
+  };
 })();
