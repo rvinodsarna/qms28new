@@ -7,7 +7,7 @@
     <meta name="hosting-provider" content="Netlify">
     <meta name="netlify-deploy" content="https://netlify.new/?utm_campaign=ai-legible&amp;utm_source=meta&amp;utm_medium=referral&amp;utm_id=4576652a-99c2-4fe2-9505-699192a5ab11">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>UNIMY QMS RISE v28.0 — Final</title>
+    <title>UNIMY QMS RISE v28.0 â€” Final</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css?v=2">
     <link rel="stylesheet" href="./so-csi-styles.css?v=2">
-    <!-- Heavy CDN libs loaded after page is idle — none needed for splash/login -->
+    <!-- Heavy CDN libs loaded after page is idle â€” none needed for splash/login -->
     <script>
       window.addEventListener('load', function () {
         var heavy = [
@@ -37,7 +37,7 @@
           { url: 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js' },
           { url: './face-auth.js',
             after: function () {
-              // face-auth.js is now defined — re-init the login page's face login if visible
+              // face-auth.js is now defined â€” re-init the login page's face login if visible
               if (typeof window.__startFaceLoginFlow === 'function') {
                 try { window.__startFaceLoginFlow(); } catch (e) { console.warn('face-auth init:', e); }
               }
@@ -72,7 +72,7 @@
 </head>
 <body>
 
-    <!-- ─── SPLASH SCREEN ─── -->
+    <!-- â”€â”€â”€ SPLASH SCREEN â”€â”€â”€ -->
     <div id="splash-screen">
         <div class="splash-bg" id="splash-bg"></div>
         <video id="splash-video" autoplay playsinline preload="auto" poster="RISE_clean_poster.jpg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;filter:brightness(0.75) saturate(1.1);">
@@ -83,11 +83,11 @@
             <div class="bar" id="splash-progress-bar"></div>
         </div>
         <button class="splash-skip" id="splash-skip-btn">Skip Intro</button>
-        <button class="splash-unmute" id="splash-unmute-btn" style="display:none;">🔇 Tap for sound</button>
+        <button class="splash-unmute" id="splash-unmute-btn" style="display:none;">ðŸ”‡ Tap for sound</button>
         <div class="splash-version">UNIVERSITY MALAYSIA OF COMPUTER SCIENCE &amp; ENGINEERING</div>
     </div>
 
-    <!-- ─── CREDITS SCREEN ─── -->
+    <!-- â”€â”€â”€ CREDITS SCREEN â”€â”€â”€ -->
     <div id="credits-screen">
         <div class="credits-grid-bg"></div>
         <div class="credits-frame">
@@ -101,11 +101,11 @@
                 </video>
             </div>
             <div class="credits-status"><span class="credits-status-dot"></span>School of Cyber Security &amp; Data Intelligence (So-CSI)</div>
-            <button type="button" id="credits-continue-btn" class="credits-continue">Continue&nbsp;→</button>
+            <button type="button" id="credits-continue-btn" class="credits-continue">Continue&nbsp;â†’</button>
         </div>
     </div>
 
-    <!-- ─── LOGOUT VIDEO OVERLAY ─── -->
+    <!-- â”€â”€â”€ LOGOUT VIDEO OVERLAY â”€â”€â”€ -->
     <div id="logout-video-overlay">
         <video id="logout-video" playsinline preload="none" poster="RISE-LOGO2_poster.jpg">
             <source src="RISE-QMS-LOGO2_small.mp4" type="video/mp4">
@@ -130,6 +130,7 @@
 
     <!-- Main app logic -->
     <script src="./app.js?v=2" defer></script>
+    <script src="qr-rpc-fix.js?v=1" defer></script>
 
     <!-- AI FAQ assistant (uses window.supabase) -->
     <script src="./ai-faq.js?v=31" defer></script>
