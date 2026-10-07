@@ -1,29 +1,34 @@
-﻿/* dash-drag.js — enable drag-and-drop reordering for
+﻿/* dash-drag.js — drag-and-drop reordering for dashboard grids
  *   - RISE Categories  (.sd-cats-grid)
  *   - Quick Actions    (.sd-qa-grid)
- * Order saved to localStorage, keyed per-container.
- * Re-applies automatically whenever the dashboard re-renders.
+ *
+ * Order is saved per-user in Supabase (table: user_dashboard_layout)
+ * with localStorage as a fast cache. Falls back to localStorage-only
+ * if the user is not signed in.
  */
 (function () {
   "use strict";
   if (window.__dashDrag) return;
   window.__dashDrag = true;
 
-  const STORE_KEY = "qms.dashOrder.v1";
+  const LS_KEY   = "qms.dashOrder.v1";
+  const TABLE    = "user_dashboard_layout";
   const SELECTORS = [".sd-cats-grid", ".sd-qa-grid", ".quick-access-grid", ".sd-quick-access"];
 
-  /* ---------- storage ---------- */
-  function loadOrder() {
-    try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}") || {}; }
-    catch (e) { return {}; }
-  }
-  function saveOrder(obj) {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); } catch (e) {}
-  }
+  // In-memory layout, hydrated from Supabase once
+  let layout = {};
+  let hydrated = false;
+  let currentUserId = null;
+  let saveTimer = null;
 
   /* ---------- helpers ---------- */
+  function containerKey(container) {
+    const cls = (container.className || "").split(" ").filter(Boolean)[0] || "grid";
+    const scope = container.dataset.scope || "";
+    return scope ? cls + "|" + scope : cls;
+  }
+
   function childKey(el, index) {
-    // Prefer stable identifiers so order survives re-renders
     return (
       el.dataset.id ||
       el.dataset.key ||
@@ -34,19 +39,90 @@
     );
   }
 
+  function lsLoad() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; }
+    catch (e) { return {}; }
+  }
+  function lsSave(obj) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(obj)); } catch (e) {}
+  }
+
+  /* ---------- Supabase hydration ---------- */
+  async function hydrateFromSupabase() {
+    if (hydrated) return;
+    hydrated = true;
+
+    // Fast path: use localStorage first so drag works immediately
+    layout = lsLoad();
+
+    const sb = window.qmsSupabase;
+    if (!sb) return;
+
+    try {
+      const { data: sess } = await sb.auth.getSession();
+      currentUserId = sess && sess.session && sess.session.user && sess.session.user.id;
+      if (!currentUserId) return;
+
+      const { data, error } = await sb
+        .from(TABLE)
+        .select("layout")
+        .eq("user_id", currentUserId)
+        .maybeSingle();
+
+      if (error) { console.warn("[dash-drag] hydrate error:", error.message); return; }
+      if (data && data.layout && typeof data.layout === "object") {
+        // Merge: Supabase wins for keys it has; keep any localStorage-only keys
+        layout = Object.assign({}, layout, data.layout);
+        lsSave(layout);
+        console.log("[dash-drag] hydrated from Supabase");
+        // Reapply to already-enhanced containers
+        document.querySelectorAll(SELECTORS.join(",")).forEach(function (c) {
+          applyOrder(c);
+        });
+      }
+    } catch (e) {
+      console.warn("[dash-drag] hydrate failed:", e);
+    }
+  }
+
+  async function saveToSupabase() {
+    const sb = window.qmsSupabase;
+    if (!sb || !currentUserId) return;
+    try {
+      const payload = {
+        user_id: currentUserId,
+        layout: layout,
+        updated_at: new Date().toISOString()
+      };
+      const { error } = await sb
+        .from(TABLE)
+        .upsert(payload, { onConflict: "user_id" });
+      if (error) console.warn("[dash-drag] save error:", error.message);
+    } catch (e) {
+      console.warn("[dash-drag] save failed:", e);
+    }
+  }
+
+  function scheduleSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      lsSave(layout);
+      saveToSupabase();
+    }, 500);
+  }
+
+  /* ---------- order application ---------- */
   function applyOrder(container) {
-    const key = container.className.split(" ")[0] + "|" + (container.dataset.scope || "");
-    const order = loadOrder()[key];
+    const key = containerKey(container);
+    const order = layout[key];
     if (!order || !order.length) return;
 
     const children = Array.from(container.children);
     if (!children.length) return;
 
-    // Build a lookup by childKey
     const map = new Map();
     children.forEach(function (el, i) { map.set(childKey(el, i), el); });
 
-    // Append in saved order; unknown items go to the end
     const used = new Set();
     order.forEach(function (k) {
       const el = map.get(k);
@@ -59,11 +135,10 @@
   }
 
   function persistOrder(container) {
-    const key = container.className.split(" ")[0] + "|" + (container.dataset.scope || "");
+    const key = containerKey(container);
     const ids = Array.from(container.children).map(function (el, i) { return childKey(el, i); });
-    const all = loadOrder();
-    all[key] = ids;
-    saveOrder(all);
+    layout[key] = ids;
+    scheduleSave();
   }
 
   /* ---------- drag behavior ---------- */
@@ -108,7 +183,7 @@
   }
 
   function enhance(container) {
-    if (container.dataset.dragEnhanced) return;
+    if (container.dataset.dragEnhanced === "1") return;
     container.dataset.dragEnhanced = "1";
     Array.from(container.children).forEach(function (child) {
       makeDraggable(child, container);
@@ -116,25 +191,25 @@
     applyOrder(container);
   }
 
-  /* ---------- scanning & mutation watching ---------- */
+  /* ---------- scanning ---------- */
   function scan() {
     SELECTORS.forEach(function (sel) {
       document.querySelectorAll(sel).forEach(function (container) {
         if (!container || container.children.length === 0) return;
+        // Re-enhance if children changed
+        const allReady = Array.from(container.children).every(function (c) { return c.dataset.dragReady; });
+        if (!allReady) {
+          container.dataset.dragEnhanced = "";
+          container.dataset.dragEnhanced = "1";
+        }
         enhance(container);
-        // If children changed (e.g. re-render), re-attach
-        Array.from(container.children).forEach(function (child) {
-          if (!child.dataset.dragReady) {
-            container.dataset.dragEnhanced = "";
-            enhance(container);
-          }
-        });
       });
     });
   }
 
   /* ---------- init ---------- */
   function start() {
+    hydrateFromSupabase();
     scan();
     const obs = new MutationObserver(function () { scan(); });
     obs.observe(document.body, { childList: true, subtree: true });
