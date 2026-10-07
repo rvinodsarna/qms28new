@@ -3,8 +3,7 @@
  *   - Quick Actions    (.sd-qa-grid)
  *
  * Order is saved per-user in Supabase (table: user_dashboard_layout)
- * with localStorage as a fast cache. Falls back to localStorage-only
- * if the user is not signed in.
+ * with localStorage as a fast cache.
  */
 (function () {
   "use strict";
@@ -15,7 +14,6 @@
   const TABLE    = "user_dashboard_layout";
   const SELECTORS = [".sd-cats-grid", ".sd-qa-grid", ".quick-access-grid", ".sd-quick-access"];
 
-  // In-memory layout, hydrated from Supabase once
   let layout = {};
   let hydrated = false;
   let currentUserId = null;
@@ -47,17 +45,14 @@
     try { localStorage.setItem(LS_KEY, JSON.stringify(obj)); } catch (e) {}
   }
 
-  /* ---------- Supabase hydration ---------- */
+  /* ---------- Supabase ---------- */
   async function hydrateFromSupabase() {
     if (hydrated) return;
     hydrated = true;
-
-    // Fast path: use localStorage first so drag works immediately
     layout = lsLoad();
 
     const sb = window.qmsSupabase;
     if (!sb) return;
-
     try {
       const { data: sess } = await sb.auth.getSession();
       currentUserId = sess && sess.session && sess.session.user && sess.session.user.id;
@@ -71,14 +66,10 @@
 
       if (error) { console.warn("[dash-drag] hydrate error:", error.message); return; }
       if (data && data.layout && typeof data.layout === "object") {
-        // Merge: Supabase wins for keys it has; keep any localStorage-only keys
         layout = Object.assign({}, layout, data.layout);
         lsSave(layout);
         console.log("[dash-drag] hydrated from Supabase");
-        // Reapply to already-enhanced containers
-        document.querySelectorAll(SELECTORS.join(",")).forEach(function (c) {
-          applyOrder(c);
-        });
+        document.querySelectorAll(SELECTORS.join(",")).forEach(applyOrder);
       }
     } catch (e) {
       console.warn("[dash-drag] hydrate failed:", e);
@@ -94,9 +85,7 @@
         layout: layout,
         updated_at: new Date().toISOString()
       };
-      const { error } = await sb
-        .from(TABLE)
-        .upsert(payload, { onConflict: "user_id" });
+      const { error } = await sb.from(TABLE).upsert(payload, { onConflict: "user_id" });
       if (error) console.warn("[dash-drag] save error:", error.message);
     } catch (e) {
       console.warn("[dash-drag] save failed:", e);
@@ -111,7 +100,7 @@
     }, 500);
   }
 
-  /* ---------- order application ---------- */
+  /* ---------- order ---------- */
   function applyOrder(container) {
     const key = containerKey(container);
     const order = layout[key];
@@ -141,12 +130,12 @@
     scheduleSave();
   }
 
-  /* ---------- drag behavior ---------- */
+  /* ---------- drag ---------- */
   let dragEl = null;
   let dragContainer = null;
 
   function makeDraggable(el, container) {
-    if (el.dataset.dragReady) return;
+    if (el.dataset.dragReady === "1") return;
     el.dataset.dragReady = "1";
     el.setAttribute("draggable", "true");
     el.style.cursor = "grab";
@@ -182,26 +171,20 @@
     });
   }
 
+  /* ---------- scan and enhance ---------- */
   function enhance(container) {
-    if (container.dataset.dragEnhanced === "1") return;
-    container.dataset.dragEnhanced = "1";
+    // Always ensure every child has drag handlers
     Array.from(container.children).forEach(function (child) {
       makeDraggable(child, container);
     });
+    // Apply saved order
     applyOrder(container);
   }
 
-  /* ---------- scanning ---------- */
   function scan() {
     SELECTORS.forEach(function (sel) {
       document.querySelectorAll(sel).forEach(function (container) {
         if (!container || container.children.length === 0) return;
-        // Re-enhance if children changed
-        const allReady = Array.from(container.children).every(function (c) { return c.dataset.dragReady; });
-        if (!allReady) {
-          container.dataset.dragEnhanced = "";
-          container.dataset.dragEnhanced = "1";
-        }
         enhance(container);
       });
     });
