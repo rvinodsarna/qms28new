@@ -1,4 +1,5 @@
-﻿# Trash / backups
+.git/
+# Trash / backups
 _trash/
 _backups/
 .netlify/
