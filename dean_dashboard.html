@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -499,7 +499,7 @@
                 <span class="dot">Q</span>
                 <div>
                     UNIMY QMS RISE
-                    <small>DEAN COMMAND CENTER Â· v25</small>
+                    <small>DEAN COMMAND CENTER · v28</small>
                 </div>
             </div>
             <div class="clock" id="clock"></div>
@@ -517,7 +517,7 @@
                 <div class="loading"><div class="spin"></div>CONNECTING TO SUPABASEâ€¦</div>
             </main>
         </div>
-        <footer>UNIMY QMS RISE v25 Â· DEAN COMMAND CENTER Â· LIVE DATA Â· SECURED</footer>
+        <footer>UNIMY QMS RISE v28 · DEAN COMMAND CENTER · LIVE DATA · SECURED</footer>
     </div>
 
     <script>
@@ -637,7 +637,7 @@
                 '<div class="hero">' +
                 '<div class="eyebrow">' + esc(tag) + "</div>" +
                 "<h1>" + esc(title) + "</h1>" +
-                '<div class="type">Live Supabase Â· <b>real data</b></div>' +
+                '<div class="type">Live Supabase · <b>real data</b></div>' +
                 "</div>"
             );
         }
@@ -941,14 +941,14 @@
 
         async function renderOverview(active) {
             const content =
-                hero("â—† Academic Quality Â· Dean", "Dean Command Center") +
+                hero("â—† Academic Quality · Dean", "Dean Command Center") +
                 '<div class="kpi-grid">' +
                     kpiCard("stu", "ðŸŽ“", "Total Students", "g") +
                     kpiCard("fac", "ðŸ§‘â€ðŸ«", "Faculty & Staff", "m") +
                     kpiCard("eval", "ðŸ“ˆ", "Evaluations", "w") +
                     kpiCard("comp", "âš ï¸", "Open Complaints", "") +
                 "</div>" +
-                chWrap("chCredits", "Credit Transfer Pipeline", "TCQMS Â· REAL") +
+                chWrap("chCredits", "Credit Transfer Pipeline", "TCQMS · REAL") +
                 '<div class="grid-2">' +
                     chWrap("chComps", "Complaints by Status", "REAL") +
                     chWrap("chTrend", "Weekly Activity Trend", "REAL") +
@@ -1133,7 +1133,7 @@
             const content =
                 hero("ðŸ” Security Details v2", "Dean-Only Operational View") +
                 '<div class="card" style="border-color:rgba(0,240,255,0.25);">' +
-                '<h3>ðŸ” Security Details v2 <small>Dean-Only Â· QMS RISE</small></h3>' +
+                '<h3>ðŸ” Security Details v2 <small>Dean-Only · QMS RISE</small></h3>' +
                 '<div style="margin-bottom:10px;font-size:11px;color:var(--ink-muted);font-family:var(--font-m);">' +
                 "All metrics reflect real recorded information when available. Uninstrumented items shown transparently to maintain audit integrity." +
                 "</div>" +
@@ -1173,7 +1173,7 @@
                 '<span style="font-size:11px;color:var(--ink-muted);font-family:var(--font-m);">' +
                 "ðŸ“Š Dean-only operational view.</span>" +
                 '<span class="sec-badge operational">QMS RISE Security</span> ' +
-                '<span class="sec-badge active" style="background:rgba(255,45,122,0.1);color:var(--magenta);border-color:rgba(255,45,122,0.2);">Confidential Â· Dean Access Only</span>' +
+                '<span class="sec-badge active" style="background:rgba(255,45,122,0.1);color:var(--magenta);border-color:rgba(255,45,122,0.2);">Confidential · Dean Access Only</span>' +
                 "</div>" +
                 "</div>";
 
@@ -1190,7 +1190,7 @@
             const main = $("main");
             const container = document.createElement("div");
             container.innerHTML =
-                '<div class="card"><h3>Live Feed <small>REALTIME Â· SUPABASE</small></h3>' +
+                '<div class="card"><h3>Live Feed <small>REALTIME · SUPABASE</small></h3>' +
                 '<ul class="feed" id="liveFeed"></ul></div>';
             main.appendChild(container);
 
@@ -1227,7 +1227,7 @@
                         '<li class="' + (it.cls || "") + '"><div>' +
                         '<div class="f-t">' + esc(it.type) + "</div>" +
                         '<div class="f-s">' + esc(it.detail) +
-                        (it.date ? " Â· " + esc(new Date(it.date).toLocaleDateString("en-GB")) : "") +
+                        (it.date ? " · " + esc(new Date(it.date).toLocaleDateString("en-GB")) : "") +
                         "</div></div></li>")
                     .join("");
             }

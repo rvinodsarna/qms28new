@@ -1,4 +1,4 @@
-// QMS RISE v25 - Secure Config + Supabase + AI Helper
+// QMS RISE v28 - Secure Config + Supabase + AI Helper
 // Loads secrets from private GitHub repo and initializes:
 // - window.supabase (Supabase client)
 // - window.QMS_AI (AI helper with FAQ fallback; extendable to Gemini/OpenAI)
@@ -7,9 +7,9 @@ const CONFIG_URL = 'https://raw.githubusercontent.com/rvinodsarna/unimy-qms-conf
 
 let QMS_CONFIG = {
   supabase: { url: '', anonKey: '' },
-  gemini: { apiKey: '', model: 'gemini-2.0-flash-exp' },
+  gemini: { apiKey: '', model: 'gemini-3.8-flash' },
   openai: { apiKey: '', model: 'gpt-4o-mini' },
-  app: { version: '25.0', name: 'UNIMY QMS RISE' }
+  app: { version: '28.0', name: 'UNIMY QMS RISE' }
 };
 
 // ---------- AI Helper (FAQ + optional LLMs) ----------

@@ -1,0 +1,9 @@
+streamlit
+pandas
+gspread
+google-auth
+firebase-admin
+supabase
+qrcode
+tenacity
+ollama

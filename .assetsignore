@@ -1,35 +1,20 @@
-# ── Dev / source files — never serve to the public ──
+﻿# Trash / backups
+_trash/
+_backups/
+.netlify/
 .wrangler/
-.git/
-.gitignore
-.gitattributes
+qms_ui_shots/
 node_modules/
 
-# ── Build / config files ──
-wrangler.toml
-netlify.toml
-worker.js
-package.json
-package-lock.json
-
-# ── Docs and metadata ──
-README*
+# Source / config / docs (not for public serving)
+*.py
+*.sql
 *.md
 *.txt
-
-# ── Data files ──
-*.sql
-*.csv
-*.xlsx
+*.log
 *.zip
 *.bak
-
-# ── Python / scripts ──
-*.py
+netlify.toml
+.gitignore
+.assetsignore
 requirements.txt
-
-# ── Dead / legacy code ──
-gemini-proxy.js
-navbar-cleanup.js
-dean_dashboard_patch.js
-dean_dashboard_fix.sql

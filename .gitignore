@@ -1,5 +1,27 @@
+﻿# Trash / backups
+_trash/
+_backups/
+*.bak
+*.v25_backup
+*.before_*
+*.mutebtn_backup
+
+# Build / runtime
 .wrangler/
+.netlify/
 node_modules/
-*.log
 .env
-.env.local
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.py
+
+# Screenshots
+qms_ui_shots/
+
+# OS
+.DS_Store
+Thumbs.db

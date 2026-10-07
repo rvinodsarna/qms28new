@@ -15,7 +15,7 @@ const DEFAULT_ALLOWED_ORIGINS = [
     "https://qms28new.astrovinodsarna.workers.dev",
 ];
 
-const ALLOWED_MODELS = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"];
+const ALLOWED_MODELS = ["gemini-3.8-flash"];
 const MAX_BODY_BYTES = 32 * 1024;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX = 20;
@@ -140,7 +140,7 @@ async function handleGeminiProxy(request, env) {
 
     const model = ALLOWED_MODELS.indexOf(payload.model) !== -1
         ? payload.model
-        : "gemini-2.5-flash";
+        : "gemini-3.8-flash";
 
     if (!payload.body || typeof payload.body !== "object") {
         return jsonResponse(400, { error: "Missing request body" }, cors);

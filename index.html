@@ -1,19 +1,21 @@
 <!DOCTYPE html>
+<!-- build 213707 -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="hosting-provider" content="Netlify">
     <meta name="netlify-deploy" content="https://netlify.new/?utm_campaign=ai-legible&amp;utm_source=meta&amp;utm_medium=referral&amp;utm_id=4576652a-99c2-4fe2-9505-699192a5ab11">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>UNIMY QMS RISE v25.0 — Final</title>
+    <title>UNIMY QMS RISE v28.0 — Final</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="./so-csi-styles.css">
+    <link rel="stylesheet" href="./styles.css?v=2">
+    <link rel="stylesheet" href="./so-csi-styles.css?v=2">
     <!-- Heavy CDN libs loaded after page is idle — none needed for splash/login -->
     <script>
       window.addEventListener('load', function () {
@@ -62,6 +64,11 @@
         }
       });
     </script>
+
+
+
+
+
 </head>
 <body>
 
@@ -69,7 +76,7 @@
     <div id="splash-screen">
         <div class="splash-bg" id="splash-bg"></div>
         <video id="splash-video" autoplay playsinline preload="auto" poster="RISE_clean_poster.jpg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;filter:brightness(0.75) saturate(1.1);">
-            <source src="RISE_clean_small.mp4" type="video/mp4">
+            <source src="RISE_clean.mp4" type="video/mp4">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%23050510'/%3E%3Ctext x='50%25' y='50%25' font-family='sans-serif' font-size='24' fill='%2300f0ff' text-anchor='middle' dy='.3em'%3EUNIMY QMS RISE%3C/text%3E%3C/svg%3E" style="width:100%;height:100%;object-fit:cover;" />
         </video>
         <div class="splash-progress">
@@ -90,7 +97,7 @@
                 <span class="hud-corner bl"></span>
                 <span class="hud-corner br"></span>
                 <span class="credits-scanline"></span>
-                <video src="./vinod_sarna_luxury_gold_shimmer_small.mp4" class="credits-card-img" playsinline autoplay muted loop preload="metadata" poster="vinod_poster.jpg">
+                <video src="./credits.mp4" class="credits-card-img" playsinline autoplay muted loop preload="metadata" poster="credits_poster.jpg">
                 </video>
             </div>
             <div class="credits-status"><span class="credits-status-dot"></span>School of Cyber Security &amp; Data Intelligence (So-CSI)</div>
@@ -100,7 +107,7 @@
 
     <!-- ─── LOGOUT VIDEO OVERLAY ─── -->
     <div id="logout-video-overlay">
-        <video id="logout-video" playsinline muted preload="none" poster="RISE-LOGO2_poster.jpg">
+        <video id="logout-video" playsinline preload="none" poster="RISE-LOGO2_poster.jpg">
             <source src="RISE-QMS-LOGO2_small.mp4" type="video/mp4">
         </video>
         <button type="button" class="logout-video-skip" id="logout-video-skip-btn">Skip</button>
@@ -119,15 +126,57 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
     <!-- Your secure config (loads secrets + initializes window.supabase) -->
-    <script src="./config.js" defer></script>
+    <script src="./config.js?v=2" defer></script>
 
     <!-- Main app logic -->
-    <script src="./app.js" defer></script>
+    <script src="./app.js?v=2" defer></script>
 
     <!-- AI FAQ assistant (uses window.supabase) -->
-    <script src="./ai-faq.js" defer></script>
+    <script src="./ai-faq.js?v=31" defer></script>
+  <script src="./ai-smart.js?v=25" defer></script>
+  <script src="./ai-faq-local.js?v=32" defer></script>
 
     <!-- Other scripts -->
-    <script src="./app-extra.js" defer></script>
-    </body>
+    <script src="./app-extra.js?v=2" defer></script>
+  <script src="./dash-order.js?v=1" defer></script>
+  <script src="./dashboard-extras.js?v=6" defer></script>
+  <script src="./rise-heading.js?v=1" defer></script>
+  
+  
+
+
+  
+
+    <script>
+(function(){
+  function wireSplashAudio(){
+    var v = document.getElementById('splash-video');
+    var b = document.getElementById('splash-unmute-btn');
+    if (!v || !b) return;
+    b.style.display = 'block';
+    function refresh(){
+      b.innerHTML = v.muted ? '\uD83D\uDD07 Unmute' : '\uD83D\uDD0A Mute';
+    }
+    refresh();
+    v.addEventListener('volumechange', refresh);
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      e.preventDefault();
+      v.muted = !v.muted;
+      if (!v.muted) { v.play().catch(function(){}); }
+      refresh();
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wireSplashAudio);
+  } else {
+    wireSplashAudio();
+  }
+})();
+</script>
+  <script src="dashboard-drag.js?v=100" defer></script>
+  <script src="dashboard-spacing.js?v=100" defer></script>
+  <script src="rise-caps.js?v=100" defer></script>
+  <script src="hop-stats.js?v=100" defer></script>
+</body>
 </html>

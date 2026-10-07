@@ -51,3 +51,44 @@ if (document.readyState === 'loading') {
 }
 
 console.log('🚀 Navbar cleanup script loaded');
+
+/* Hide the "?" help button in the top-left (next to the hamburger) */
+(function () {
+  "use strict";
+  if (window.__hideQL) return;
+  window.__hideQL = true;
+
+  function hideQ() {
+    document.querySelectorAll("*").forEach(function(el){
+      // Must be a small element (not a container)
+      var r = el.getBoundingClientRect();
+      if (r.width === 0 || r.height === 0) return;
+      if (r.width > 80 || r.height > 80) return;
+      if (r.left > 200 || r.top > 120) return;   // top-left area only
+
+      var txt = (el.textContent || "").trim();
+      if (txt !== "?") return;                    // exactly "?"
+
+      // Skip if inside a form/input (won't be, but safe)
+      if (el.closest("input, textarea, select, form")) return;
+
+      // Hide the clickable wrapper, not just the character
+      var target = el.closest("button, a, [role='button']") || el;
+      target.style.setProperty("display", "none", "important");
+      target.setAttribute("data-hide-q", "1");
+      console.log("[hide-q] hidden:", target.tagName, target.className);
+    });
+  }
+
+  var scheduled = false;
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    setTimeout(function(){ scheduled = false; hideQ(); }, 500);
+  }
+
+  var obs = new MutationObserver(schedule);
+  function init() { hideQ(); obs.observe(document.body, { childList: true, subtree: true }); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();

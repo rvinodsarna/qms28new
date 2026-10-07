@@ -112,8 +112,8 @@
 }
 
 /* ================= Dean Dashboard — calm light SaaS theme (scoped) ================= */
-/* Overrides local to .dean-calm only. Rest of the app is untouched. */
-.dean-calm{
+/* Overrides local to .dean-calm-DISABLED only. Rest of the app is untouched. */
+.dean-calm-DISABLED{
     --color-bg:#F6F7F9;
     --color-surface:#FFFFFF;
     --color-surface-2:#F1F2F5;
@@ -143,123 +143,123 @@
 }
 
 /* Cards: flat white surface, soft shadow, no glow/blur, no rainbow top bar */
-.dean-calm .kpi-card,
-.dean-calm .glass-card{
+.dean-calm-DISABLED .kpi-card,
+.dean-calm-DISABLED .glass-card{
     background:var(--color-surface);
     backdrop-filter:none;
     box-shadow:var(--shadow-card);
     border:1px solid var(--color-border);
 }
-.dean-calm .kpi-card::before,
-.dean-calm .glass-card::before{
+.dean-calm-DISABLED .kpi-card::before,
+.dean-calm-DISABLED .glass-card::before{
     display:none;
 }
-.dean-calm .kpi-card:hover,
-.dean-calm .glass-card:hover{
+.dean-calm-DISABLED .kpi-card:hover,
+.dean-calm-DISABLED .glass-card:hover{
     box-shadow:0 2px 8px rgba(16,24,40,.08);
 }
 
 /* KPI numbers: calm weight, no terminal glow */
-.dean-calm .kpi-icon{
+.dean-calm-DISABLED .kpi-icon{
     font-size:22px;
     opacity:.9;
 }
-.dean-calm .kpi-value{
+.dean-calm-DISABLED .kpi-value{
     font-weight:700;
     letter-spacing:-.02em;
 }
-.dean-calm .progress-track{
+.dean-calm-DISABLED .progress-track{
     background:var(--color-surface-3);
 }
-.dean-calm .progress-fill{
+.dean-calm-DISABLED .progress-fill{
     background:var(--color-primary);
     box-shadow:none;
 }
-.dean-calm .progress-fill.green{
+.dean-calm-DISABLED .progress-fill.green{
     background:var(--color-green);
 }
 
 /* Alerts: subtle tinted background instead of near-invisible dark tint */
-.dean-calm .alert{
+.dean-calm-DISABLED .alert{
     border:1px solid var(--color-border);
     background:var(--color-surface);
 }
-.dean-calm .alert-warning{
+.dean-calm-DISABLED .alert-warning{
     background:#FFFBEB;
     border-left-color:var(--color-warning);
 }
-.dean-calm .alert-error{
+.dean-calm-DISABLED .alert-error{
     background:#FEF2F2;
     border-left-color:var(--color-accent);
 }
-.dean-calm .alert-info{
+.dean-calm-DISABLED .alert-info{
     background:#EEF2FF;
     border-left-color:var(--color-primary);
 }
 
 /* Insights list */
-.dean-calm .dh-insight{
+.dean-calm-DISABLED .dh-insight{
     background:var(--color-surface-2);
     border-left:3px solid var(--color-border);
 }
-.dean-calm .dh-insight-dot.critical{background:var(--color-accent)}
-.dean-calm .dh-insight-dot.warning{background:var(--color-warning)}
-.dean-calm .dh-insight-dot.ok{background:var(--color-green)}
-.dean-calm .dh-insight-dot.info{background:var(--color-primary)}
+.dean-calm-DISABLED .dh-insight-dot.critical{background:var(--color-accent)}
+.dean-calm-DISABLED .dh-insight-dot.warning{background:var(--color-warning)}
+.dean-calm-DISABLED .dh-insight-dot.ok{background:var(--color-green)}
+.dean-calm-DISABLED .dh-insight-dot.info{background:var(--color-primary)}
 
 /* Activity feed dots: no pulse glow */
-.dean-calm .dh-feed-dot{
+.dean-calm-DISABLED .dh-feed-dot{
     box-shadow:none;
     animation:none;
 }
 
 /* Quick action tiles */
-.dean-calm .dh-action-tile{
+.dean-calm-DISABLED .dh-action-tile{
     background:var(--color-surface-2);
     border:1px solid var(--color-border-muted);
 }
-.dean-calm .dh-action-tile:hover{
+.dean-calm-DISABLED .dh-action-tile:hover{
     background:var(--color-surface-3);
     border-color:var(--color-border);
 }
 
 /* Badges */
-.dean-calm .badge-neutral{
+.dean-calm-DISABLED .badge-neutral{
     background:var(--color-surface-2);
     border:1px solid var(--color-border-muted);
     color:var(--color-ink-muted);
 }
 
 /* Hint / kbd */
-.dean-calm .dh-hint{
+.dean-calm-DISABLED .dh-hint{
     color:var(--color-ink-subtle);
 }
-.dean-calm .dh-kbd{
+.dean-calm-DISABLED .dh-kbd{
     background:var(--color-surface-2);
     border:1px solid var(--color-border);
     color:var(--color-ink-muted);
 }
 
 /* Command palette (rendered inside the same scoped wrapper) */
-.dean-calm .modal-box{
+.dean-calm-DISABLED .modal-box{
     background:var(--color-surface);
     border:1px solid var(--color-border);
     box-shadow:var(--shadow-modal);
 }
-.dean-calm .form-input{
+.dean-calm-DISABLED .form-input{
     background:var(--color-surface);
     color:var(--color-ink);
     border-color:var(--color-border);
 }
-.dean-calm .dh-cmdk-item:hover,
-.dean-calm .dh-cmdk-item.active{
+.dean-calm-DISABLED .dh-cmdk-item:hover,
+.dean-calm-DISABLED .dh-cmdk-item.active{
     background:var(--color-surface-2);
 }
 
 /* Scrollbar: neutral thumb instead of neon cyan while Dean Dashboard is showing */
-.main-content.dean-calm-scroll{
+.main-content.dean-calm-DISABLED-scroll{
     scrollbar-color:rgba(17,24,39,.22) transparent;
 }
-.main-content.dean-calm-scroll::-webkit-scrollbar-thumb{
+.main-content.dean-calm-DISABLED-scroll::-webkit-scrollbar-thumb{
     background:rgba(17,24,39,.22);
 }
