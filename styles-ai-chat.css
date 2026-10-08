@@ -678,3 +678,16 @@ cd C:\users\user\qms28new
   margin: 0; font-size: 12px;
   color: rgba(234,252,255,.55); line-height: 1.6;
 }
+
+/* ═══ Hide legacy AI drawer from app.js ═══ */
+#ai-drawer-box,
+#ai-fab-root,
+.ai-drawer,
+.ai-fab,
+[id^="ai-drawer"],
+[id^="ai-fab"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
