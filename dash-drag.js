@@ -22,10 +22,10 @@
   var pinnedRendered = {};
 
   var FIXED_TILES = [
-    { icon: "\uD83D\uDCC5", code: "timetable",        route: "timetable",         cls: "qa-cyan",    display: "Timetable" },
-    { icon: "\uD83D\uDCDA", code: "study-plan",       route: "study-plan",        cls: "qa-violet",  display: "Study Plan" },
-    { icon: "\uD83C\uDF93", code: "academic-support", route: "academic-support",  cls: "qa-green",   display: "Academic Support" },
-    { icon: "\uD83D\uDCC8", code: "my-progress",      route: "my-progress",       cls: "qa-magenta", display: "My Progress" }
+    { icon: "\uD83C\uDF93", code: "academic-support", route: "academic-support", cls: "qa-green",   display: "Academic Support" },
+    { icon: "\uD83D\uDCC8", code: "my-progress",      route: "my-progress",      cls: "qa-magenta", display: "My Progress" },
+    { icon: "\uD83D\uDCC5", code: "timetable",        route: "timetable",        cls: "qa-cyan",    display: "Timetable" },
+    { icon: "\uD83D\uDCDA", code: "study-plan",       route: "study-plan",       cls: "qa-violet",  display: "Study Plan" }
   ];
 
   var CAT_META = {
