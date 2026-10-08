@@ -1,113 +1,34 @@
-/* ═══════════════ SCROLL FIX v2 — iOS/Safari/Android ═══════════════ */
-
-/* Root: allow native scroll everywhere */
+/* SMOOTH SCROLL EVERYWHERE — iOS-style inertial scrolling on all platforms */
+html {
+  scroll-behavior: smooth !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior-y: none !important;
+}
 html, body {
   overflow-x: hidden !important;
   overflow-y: auto !important;
   height: auto !important;
-  min-height: 100%;
-  -webkit-overflow-scrolling: touch !important;
+  min-height: 100% !important;
+  position: static !important;
   touch-action: pan-y !important;
-  overscroll-behavior-y: contain;
-  position: static !important;
+  overscroll-behavior-y: auto !important;
 }
-
-/* Kill any JS lock */
-body.scroll-locked, body.modal-open, body.no-scroll, html.scroll-locked {
-  overflow-y: auto !important;
-  position: static !important;
-  height: auto !important;
-}
-
-/* Main scroll containers — force touch-friendly scrolling */
 #app, .app, .app-body, #main-content, .main-content, .content, .page-content {
   overflow-y: auto !important;
   overflow-x: hidden !important;
   -webkit-overflow-scrolling: touch !important;
   touch-action: pan-y !important;
-  max-height: none !important;
+  scroll-behavior: smooth !important;
 }
-
-/* Any element that was trapping scroll — release it */
-[style*="overflow:hidden"], [style*="overflow: hidden"] {
-  /* Only if tall enough to need scroll */
-}
-
-/* Sidebar scrolls independently */
-.sidebar, .sidebar-inner, aside.sidebar, nav.sidebar {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
+.ai-chat-messages,
+.sidebar, .sidebar-inner,
+.modal, .modal-content, .modal-body,
+.drawer, .drawer-content,
+[role="dialog"] {
   -webkit-overflow-scrolling: touch !important;
-  overscroll-behavior: contain;
+  overscroll-behavior: contain !important;
+  scroll-behavior: smooth !important;
 }
-
-/* Modal / drawer / overlay inner content scrolls */
-.modal, .modal-content, .modal-body, .drawer, .drawer-content,
-.overlay, .overlay-content, [role="dialog"] {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-  overscroll-behavior: contain;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
 }
-
-/* AI chat panel */
-#ai-chat-panel { overflow: hidden !important; }
-#ai-chat-panel .ai-chat-messages {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-  touch-action: pan-y !important;
-  overscroll-behavior: contain;
-  min-height: 0;
-  flex: 1 1 auto;
-}
-#ai-chat-panel .ai-chat-header,
-#ai-chat-panel .ai-chat-composer,
-#ai-chat-panel .ai-suggestions { flex-shrink: 0; }
-
-/* Tables scroll horizontally on narrow screens */
-table, .table-wrap, .table-responsive {
-  max-width: 100%;
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-/* iOS Safari safe area */
-@supports (padding: max(0px)) {
-  body { padding-bottom: env(safe-area-inset-bottom); }
-}
-
-/* iOS Safari: force scroll on html, body */
-@supports (-webkit-touch-callout: none) {
-  html, body {
-    height: auto !important;
-    min-height: 100vh;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    position: relative !important;
-  }
-}
-
-/* Mobile: fix chat panel + main layout */
-@media (max-width: 500px) {
-  html, body {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-  body { max-width: 100vw; overflow-x: hidden; }
-  #ai-chat-panel {
-    max-height: calc(100vh - 100px) !important;
-    height: calc(100vh - 100px) !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  #ai-chat-panel .ai-chat-messages { min-height: 0; flex: 1 1 auto; }
-}
-
-/* Smooth scroll on desktop only */
-@media (min-width: 501px) {
-  html { scroll-behavior: smooth; }
-}
-
-/* Body scroll always available */
-body { overflow-y: auto !important; position: static !important; }
