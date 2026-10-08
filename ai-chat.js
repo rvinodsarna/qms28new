@@ -413,4 +413,20 @@
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
+
+  /* ---------- Remove legacy AI drawer from app.js ---------- */
+  function killLegacyChat() {
+    ['ai-drawer-box','ai-fab-root'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    });
+    document.querySelectorAll('[id^="ai-drawer"],[id^="ai-fab"]').forEach(function(el){
+      if (el.id !== 'ai-chat-panel' && el.id !== 'ai-chat-launcher') {
+        el.style.display = 'none';
+      }
+    });
+  }
+  killLegacyChat();
+  new MutationObserver(killLegacyChat).observe(document.body, { childList: true, subtree: true });
+
 })();
