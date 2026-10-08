@@ -1,34 +1,50 @@
-/* SMOOTH SCROLL EVERYWHERE — iOS-style inertial scrolling on all platforms */
-html {
-  scroll-behavior: smooth !important;
-  -webkit-overflow-scrolling: touch !important;
-  overscroll-behavior-y: none !important;
+/* UNIVERSAL SCROLL — every frame, every menu, every content area scrolls */
+* {
+  scrollbar-width: thin;
 }
 html, body {
+  overflow: auto !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
   height: auto !important;
   min-height: 100% !important;
   position: static !important;
-  touch-action: pan-y !important;
-  overscroll-behavior-y: auto !important;
+  max-height: none !important;
 }
-#app, .app, .app-body, #main-content, .main-content, .content, .page-content {
+/* Every container that could hold content — allow scroll */
+#app, #app *, #main-content, #main-content *,
+.app, .app *, .app-body,
+.content, .content *, .page-content, .page-content *,
+section, article, aside, main, nav, header, footer,
+div, ul, ol, dl, form {
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-  touch-action: pan-y !important;
-  scroll-behavior: smooth !important;
+  max-height: none !important;
 }
-.ai-chat-messages,
+/* Modal / drawer / overlay / dialog */
+.modal, .modal *, .modal-content, .modal-body,
+.drawer, .drawer *, .drawer-content,
+.overlay, .overlay *, .overlay-content,
+[role="dialog"], [role="dialog"] * {
+  overflow-y: auto !important;
+  max-height: none !important;
+}
+/* Specific QMS frames */
+.sd-wrap, .sd-cats-grid, .sd-qa-grid,
+.glass-card, .card, .panel,
 .sidebar, .sidebar-inner,
-.modal, .modal-content, .modal-body,
-.drawer, .drawer-content,
-[role="dialog"] {
-  -webkit-overflow-scrolling: touch !important;
-  overscroll-behavior: contain !important;
-  scroll-behavior: smooth !important;
+.tab-content, .tab-pane,
+table, .table-wrap, .table-responsive,
+#ai-chat-panel .ai-chat-messages,
+.ai-drawer-msgs, .ai-drawer {
+  overflow-y: auto !important;
+  max-height: none !important;
 }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto !important; }
+/* Never trap scroll */
+[style*="overflow:hidden"], [style*="overflow: hidden"],
+[style*="overflow-y:hidden"], [style*="overflow-y: hidden"] {
+  overflow-y: auto !important;
 }
+/* Keep sidebar / chat heights sane */
+.sidebar-inner { max-height: 100vh; }
+#ai-chat-panel .ai-chat-messages { max-height: 100%; }
