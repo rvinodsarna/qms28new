@@ -37,7 +37,7 @@
     tokenIndex = {};
     bigramIndex = {};
     faqs.forEach(function(f, i){
-      var txt = (f.question||"") + " " + (f.answer||"") + " " + (f.category||"");
+      var txt = (f.question||"") + " " + (f.answer||"") + " " + (f.category||"") + " " + ((f.keywords||[]).join(" "));
       var toks = tokenize(txt);
       var seen = {};
       toks.forEach(function(t){
@@ -55,7 +55,7 @@
     var f = faqs[idx];
     var qToks = tokenize(query);
     if (!qToks.length) return 0;
-    var fToks = tokenize((f.question||"") + " " + (f.answer||""));
+    var fToks = tokenize((f.question||"") + " " + (f.answer||"") + " " + ((f.keywords||[]).join(" ")));
     var fSet = {};
     fToks.forEach(function(t){ fSet[t]=1; });
     var qUniq = {}, qArr = [];
@@ -428,5 +428,34 @@
   }
   killLegacyChat();
   new MutationObserver(killLegacyChat).observe(document.body, { childList: true, subtree: true });
+
+
+
+  /* ============ Student FAQ loader (append) ============ */
+  function loadStudentFaqs() {
+    return fetch("faqs-students.json", { cache: "force-cache" })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (arr) {
+        if (!Array.isArray(arr) || !arr.length) return;
+        arr.forEach(function (f) {
+          faqs.push({
+            question: f.question || "",
+            answer:   f.answer   || "",
+            category: f.category || "Student",
+            keywords: f.keywords || []
+          });
+        });
+        buildIndex();
+        console.log("[ai-chat] +" + arr.length + " student FAQs");
+        renderSuggestions();
+      })
+      .catch(function (e) { console.warn("[ai-chat] student FAQs:", e.message); });
+  }
+
+  // Kick off the student loader once the main loader resolves
+  var __origLoadFaqs = loadFaqs;
+  loadFaqs = function () {
+    return __origLoadFaqs().then(loadStudentFaqs);
+  };
 
 })();
