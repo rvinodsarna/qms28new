@@ -174,3 +174,22 @@
     max-height: none !important;
   }
 }
+
+/* ═══ FIX: panel must be truly hidden when closed, not just transparent ═══ */
+#ai-chat-panel:not(.is-open) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  display: none !important;
+}
+#ai-chat-panel.is-open {
+  visibility: visible !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  display: flex !important;
+}
+
+/* Launcher is fine — it's small and meant to be clicked */
+#ai-chat-launcher {
+  pointer-events: auto !important;
+}
