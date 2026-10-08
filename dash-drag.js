@@ -275,6 +275,7 @@ function buildTile(meta) {
     qa.setAttribute("data-pinned-count", String(userCount));
     qa.setAttribute("data-max-pinned", String(MAX_PINNED));
     qa.setAttribute("data-edit-mode", editMode ? "1" : "0");
+    qa.setAttribute("data-ready", "1");
   }
 
   function injectEditButton() {
@@ -314,6 +315,7 @@ function buildTile(meta) {
     var qa = document.querySelector(".sd-qa-grid");
     var cats = document.querySelector(".sd-cats-grid");
     if (qa) qa.setAttribute("data-edit-mode", editMode ? "1" : "0");
+    qa.setAttribute("data-ready", "1");
     if (cats) cats.setAttribute("data-edit-mode", editMode ? "1" : "0");
 
     var btn = document.querySelector(".qa-edit-btn");
@@ -387,6 +389,7 @@ function buildTile(meta) {
         }
       });
       cats.dataset.sortableAttached = "1";
+      cats.setAttribute("data-ready", "1");
     }
 
     if (!qa.dataset.sortableAttached) {

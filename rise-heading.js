@@ -43,6 +43,7 @@
     parent.insertBefore(panel, grid);
     panel.appendChild(grid);
 
+    panel.setAttribute("data-ready", "1");
     console.log("[rise-panel] built");
     return true;
   }
