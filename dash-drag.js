@@ -142,7 +142,7 @@
     overlay.id = "qms-confirm-modal";
     overlay.style.cssText =
       "position:fixed;inset:0;z-index:9999999;" +
-      "background:rgba(6,8,16,0.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);" +
+      "background:rgba(6,8,16,0.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);" +
       "display:flex;align-items:center;justify-content:center;" +
       "animation:qmsFadeIn 0.2s ease;";
 
@@ -151,28 +151,27 @@
       "width:90%;max-width:420px;padding:28px 26px 22px;" +
       "background:linear-gradient(160deg,rgba(12,16,32,0.98),rgba(8,10,24,0.99));" +
       "border:1px solid rgba(0,245,255,0.35);border-radius:18px;" +
-      "box-shadow:0 24px 80px rgba(0,0,0,0.7),0 0 40px rgba(0,245,255,0.15);" +
+      "box-shadow:0 24px 80px rgba(0,0,0,0.7),0 0 40px rgba(0,245,255,0.18),inset 0 1px 0 rgba(255,255,255,0.05);" +
       "font-family:system-ui,-apple-system,sans-serif;color:#eafcff;" +
       "animation:qmsSlideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);";
 
     box.innerHTML =
       '<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">' +
-        '<div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ff3860,#ff6b35);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 0 20px rgba(255,56,96,0.5);">⚠️</div>' +
+        '<div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(0,245,255,0.18),rgba(124,58,237,0.18));border:1px solid rgba(0,245,255,0.5);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 0 20px rgba(0,245,255,0.35);">\u2139\uFE0F</div>' +
         '<div>' +
-          '<div style="font-size:16px;font-weight:800;letter-spacing:0.4px;">Remove from Quick Actions?</div>' +
-          '<div style="font-size:12px;opacity:0.6;margin-top:3px;">QMS RISE — Confirm action</div>' +
+          '<div style="font-size:16px;font-weight:800;letter-spacing:0.4px;background:linear-gradient(90deg,#00f5ff,#7c3aed);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Remove from Quick Actions?</div>' +
+          '<div style="font-size:11px;letter-spacing:1.5px;opacity:0.55;margin-top:4px;color:#00f5ff;">QMS RISE \u2014 CONFIRM ACTION</div>' +
         '</div>' +
       '</div>' +
-      '<div style="font-size:13.5px;line-height:1.6;opacity:0.85;margin-bottom:22px;padding-left:2px;">' + message + '</div>' +
+      '<div style="font-size:13.5px;line-height:1.6;opacity:0.85;margin-bottom:22px;padding-left:2px;color:#c8e8f0;">' + message + '</div>' +
       '<div style="display:flex;gap:10px;justify-content:flex-end;">' +
-        '<button id="qms-cancel" style="padding:10px 22px;border-radius:10px;background:rgba(255,255,255,0.05);color:#b6d8e0;border:1px solid rgba(255,255,255,0.15);font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .15s;">CANCEL</button>' +
-        '<button id="qms-remove" style="padding:10px 22px;border-radius:10px;background:linear-gradient(135deg,#ff3860,#ff6b35);color:#fff;border:none;font-size:13px;font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 0 18px rgba(255,56,96,0.5);transition:all .15s;">REMOVE</button>' +
+        '<button id="qms-cancel" style="padding:10px 22px;border-radius:10px;background:rgba(255,255,255,0.05);color:#b6d8e0;border:1px solid rgba(255,255,255,0.18);font-size:12px;font-weight:700;letter-spacing:1.2px;cursor:pointer;transition:all .18s;">CANCEL</button>' +
+        '<button id="qms-remove" style="padding:10px 22px;border-radius:10px;background:linear-gradient(135deg,#00f5ff,#7c3aed);color:#001a1f;border:none;font-size:12px;font-weight:800;letter-spacing:1.2px;cursor:pointer;box-shadow:0 0 22px rgba(0,245,255,0.55);transition:all .18s;">CONFIRM</button>' +
       '</div>';
 
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 
-    // Animations
     if (!document.getElementById("qms-modal-anim")) {
       var st = document.createElement("style");
       st.id = "qms-modal-anim";
@@ -183,15 +182,20 @@
     }
 
     function close() { overlay.remove(); }
-    document.getElementById("qms-cancel").addEventListener("click", close);
+    var cancelBtn = document.getElementById("qms-cancel");
+    var removeBtn = document.getElementById("qms-remove");
+
+    cancelBtn.addEventListener("mouseenter", function () { cancelBtn.style.background = "rgba(0,245,255,0.12)"; cancelBtn.style.borderColor = "rgba(0,245,255,0.5)"; cancelBtn.style.color = "#00f5ff"; });
+    cancelBtn.addEventListener("mouseleave", function () { cancelBtn.style.background = "rgba(255,255,255,0.05)"; cancelBtn.style.borderColor = "rgba(255,255,255,0.18)"; cancelBtn.style.color = "#b6d8e0"; });
+    removeBtn.addEventListener("mouseenter", function () { removeBtn.style.transform = "scale(1.04)"; removeBtn.style.boxShadow = "0 0 30px rgba(0,245,255,0.8)"; });
+    removeBtn.addEventListener("mouseleave", function () { removeBtn.style.transform = ""; removeBtn.style.boxShadow = "0 0 22px rgba(0,245,255,0.55)"; });
+
+    cancelBtn.addEventListener("click", close);
     overlay.addEventListener("click", function (e) { if (e.target === overlay) close(); });
     document.addEventListener("keydown", function esc(e) {
       if (e.key === "Escape") { close(); document.removeEventListener("keydown", esc); }
     });
-    document.getElementById("qms-remove").addEventListener("click", function () {
-      close();
-      onConfirm();
-    });
+    removeBtn.addEventListener("click", function () { close(); onConfirm(); });
   }
   window.__qmsConfirm = qmsConfirm;
 
@@ -369,8 +373,7 @@ function buildTile(meta) {
       ".sd-qa-grid{position:relative}",
       ".sd-qa-grid[data-pinned-count]::before{content:attr(data-pinned-count) ' / ' attr(data-max-pinned) ' pinned';position:absolute;bottom:-16px;right:0;font-size:10px;letter-spacing:1.5px;opacity:0.5}",
       ".sd-qa-tile[data-fixed='1']::after{content:'FIXED';position:absolute;top:-6px;left:-6px;padding:2px 6px;font-size:8px;letter-spacing:1px;font-weight:800;background:rgba(0,245,255,0.2);color:#00f5ff;border:1px solid rgba(0,245,255,0.5);border-radius:4px;text-shadow:0 0 6px rgba(0,245,255,0.6)}",
-      ".sd-qa-tile[data-fixed='1']{cursor:default !important}",
-      ".sd-qa-grid[data-edit-mode='1']::after{content:'EDIT MODE \u2014 tap \u00D7 to remove, then Done';position:absolute;top:-30px;right:0;font-size:10px;letter-spacing:1.5px;color:#ff3860;font-weight:800;text-shadow:0 0 8px rgba(255,56,96,0.6)}"
+      ".sd-qa-tile[data-fixed='1']{cursor:default !important}"
     ].join(String.fromCharCode(10));
     document.head.appendChild(s);
   }
