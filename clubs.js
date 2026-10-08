@@ -231,41 +231,86 @@ console.log("[clubs] loading...");
     else nav.appendChild(el);
   }
 
-  function injectDashboardCard_DISABLED() { return; /* disabled to fix flash */ }
-  function injectDashboardCard() { return; /* no-op */ }
-  function injectDashboardCard_orig() {
-    var u = window.QMS && QMS.state && QMS.state.user;
-    if (!u || u.role !== "student") return;
-    if (document.querySelector('[data-clubs-dashboard-card]')) return;
-    var anyCard = document.querySelector(".sd-cat-card");
-    if (!anyCard || !anyCard.parentElement) return;
-    var grid = anyCard.parentElement;
+  /* Flash-free Clubs dashboard card (patched) */
+  function buildClubsCardHTML(u) {
     var clubPts = Number(u.club_points || 0);
     var cap = Number(u.club_points_cap_lifetime || u.club_points_cap || 1716);
     var pct = cap > 0 ? Math.min(100, (clubPts / cap) * 100) : 0;
-
-    var card = document.createElement("div");
-    card.className = "sd-cat-card";
-    card.setAttribute("data-clubs-dashboard-card", "1");
-    card.style.cssText = "--cat-color:#00e5c0;cursor:pointer;";
-    card.innerHTML = ''
-      + '<div class="sd-cat-top">'
-      +   '<span class="sd-cat-name"><span class="sd-cat-icon-badge">\uD83C\uDFDB\uFE0F</span>Clubs &amp; Roles</span>'
-      +   '<span class="sd-cat-pct">' + pct.toFixed(1) + '%</span>'
-      + '</div>'
-      + '<div class="sd-cat-track"><div class="sd-cat-fill" style="width:' + pct + '%"></div></div>'
-      + '<div class="sd-cat-meta">' + clubPts + ' / ' + cap + ' pts</div>';
-
-    var bonusCard = null;
-    Array.prototype.forEach.call(grid.querySelectorAll(".sd-cat-card"), function (c) {
-      var n = c.querySelector(".sd-cat-name");
-      if (n && /^\s*Bonus\s*$/i.test(n.textContent.replace(/\s+/g, " ").trim())) bonusCard = c;
-    });
-    if (bonusCard) grid.insertBefore(card, bonusCard.nextSibling);
-    else grid.appendChild(card);
+    return ''
+      + '<div class="sd-cat-card" data-clubs-dashboard-card="1" style="--cat-color:#00e5c0;cursor:pointer;">'
+      +   '<div class="sd-cat-top">'
+      +     '<span class="sd-cat-name"><span class="sd-cat-icon-badge">\uD83C\uDFDB\uFE0F</span>Clubs &amp; Roles</span>'
+      +     '<span class="sd-cat-pct">' + pct.toFixed(1) + '%</span>'
+      +   '</div>'
+      +   '<div class="sd-cat-track"><div class="sd-cat-fill" style="width:' + pct + '%"></div></div>'
+      +   '<div class="sd-cat-meta">' + clubPts + ' / ' + cap + ' pts</div>'
+      + '</div>';
   }
 
-  // Only override cards the app routes wrong or not at all.
+  function injectClubsCardIntoHTML(html, u) {
+    if (typeof html !== "string") return html;
+    if (html.indexOf("sd-cats-grid") === -1) return html;
+    if (html.indexOf("data-clubs-dashboard-card") !== -1) return html;
+    var open = html.indexOf('<div class="sd-cats-grid">');
+    if (open === -1) return html;
+    var start = open + '<div class="sd-cats-grid">'.length;
+    var depth = 1, re = /<\/?div\b/g;
+    re.lastIndex = start;
+    var m;
+    while ((m = re.exec(html)) !== null) {
+      if (m[0] === '<div') depth++;
+      else depth--;
+      if (depth === 0) {
+        return html.slice(0, m.index) + buildClubsCardHTML(u) + html.slice(m.index);
+      }
+    }
+    return html;
+  }
+
+  function installDashboardHTMLInterceptor() {
+    if (window.__clubsHTMLPatched) return true;
+    if (typeof window.renderDashboard !== "function") return false;
+    var origRender = window.renderDashboard;
+    window.renderDashboard = function () {
+      var u = window.QMS && QMS.state && QMS.state.user;
+      if (!u || u.role !== "student") return origRender.apply(this, arguments);
+      var mc = document.getElementById("main-content");
+      if (!mc) return origRender.apply(this, arguments);
+      var proto = Object.getPrototypeOf(mc);
+      var desc = Object.getOwnPropertyDescriptor(proto, "innerHTML");
+      if (!desc || !desc.set) return origRender.apply(this, arguments);
+      var origSet = desc.set;
+      Object.defineProperty(mc, "innerHTML", {
+        configurable: true,
+        get: desc.get,
+        set: function (html) {
+          if (typeof html === "string") html = injectClubsCardIntoHTML(html, u);
+          origSet.call(this, html);
+        }
+      });
+      try {
+        return origRender.apply(this, arguments);
+      } finally {
+        try { delete mc.innerHTML; } catch (e2) {
+          try { Object.defineProperty(mc, "innerHTML", desc); } catch (e3) {}
+        }
+      }
+    };
+    window.__clubsHTMLPatched = true;
+    return true;
+  }
+
+  function injectDashboardCard() {
+    var u = window.QMS && QMS.state && QMS.state.user;
+    if (!u || u.role !== "student") return;
+    if (document.querySelector('[data-clubs-dashboard-card]')) return;
+    var grid = document.querySelector(".sd-cats-grid");
+    if (!grid) return;
+    if (grid.querySelector('[data-clubs-dashboard-card]')) return;
+    grid.insertAdjacentHTML("beforeend", buildClubsCardHTML(u));
+  }
+
+// Only override cards the app routes wrong or not at all.
   // Everything else (Attendance, Bonus, Streak, Coursera) uses the app's own handler.
   var CARD_OVERRIDE = {
     "attendance":        "qr-scanner",
