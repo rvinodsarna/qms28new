@@ -1,0 +1,142 @@
+﻿/* ═══════════════ SCROLL FIX — works on all screens ═══════════════ */
+
+/* Base: allow scroll everywhere by default */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  min-height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+/* Main app shell — if it locks scroll, unlock it */
+#app,
+.app,
+.app-body,
+#main-content,
+.main-content,
+.content,
+.page-content {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Sidebar scrolls independently on long menus */
+.sidebar,
+.sidebar-inner,
+aside.sidebar,
+nav.sidebar {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* AI chat panel — messages scroll, header/composer stay fixed */
+#ai-chat-panel {
+  overflow: hidden !important;
+}
+#ai-chat-panel .ai-chat-messages {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+#ai-chat-panel .ai-chat-header,
+#ai-chat-panel .ai-chat-composer,
+#ai-chat-panel .ai-suggestions {
+  flex-shrink: 0;
+}
+
+/* Modals / drawers / overlays scroll their inner content */
+.modal,
+.modal-content,
+.modal-body,
+.drawer,
+.drawer-content,
+.overlay,
+.overlay-content,
+[role="dialog"] {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Prevent any card/panel from trapping scroll on mobile */
+.glass-card,
+.card,
+.panel,
+section,
+article {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Tables scroll horizontally on narrow screens */
+table,
+.table-wrap,
+.table-responsive {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Long code/pre blocks */
+pre, code {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* If a modal locks body scroll, allow scroll inside the modal */
+body.no-scroll,
+body.modal-open,
+body.locked {
+  overflow-y: hidden;
+}
+body.no-scroll .modal,
+body.modal-open .modal,
+body.locked .modal {
+  overflow-y: auto !important;
+}
+
+/* Mobile: fixed positioning of chat panel must still scroll content */
+@media (max-width: 500px) {
+  #ai-chat-panel {
+    max-height: calc(100vh - 100px) !important;
+    height: calc(100vh - 100px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  #ai-chat-panel .ai-chat-messages {
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+  /* Ensure nothing overflows horizontally */
+  body { max-width: 100vw; overflow-x: hidden; }
+}
+
+/* iOS Safari: prevent body from being 100% and clipping content */
+@supports (-webkit-touch-callout: none) {
+  html, body {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-y: auto !important;
+  }
+}
+
+/* Fix: pages that had overflow:hidden locked in JS */
+body.scroll-locked,
+html.scroll-locked {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
