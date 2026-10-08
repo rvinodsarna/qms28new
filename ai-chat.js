@@ -304,7 +304,7 @@
     var match = findBest(text);
     if (match) {
       reply = match.faq.answer || match.faq.question || "I found a match but no answer text.";
-      source = "FAQ - " + (match.faq.category || "General");
+      source = match.faq.category || "Answer";
     }
 
     if (!reply && window.__aiLocalMatch) {
@@ -312,7 +312,7 @@
         var local = window.__aiLocalMatch(text);
         if (local && (local.answer || local.text)) {
           reply = local.answer || local.text;
-          source = "FAQ - local";
+          source = "Answer";
         }
       } catch (e) {}
     }
