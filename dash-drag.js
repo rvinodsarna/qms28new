@@ -11,7 +11,7 @@
   if (window.__dashDrag) return;
   window.__dashDrag = true;
 
-  var MAX_PINNED = 6;
+  var MAX_PINNED = 10;
   var LS_KEY = "qms.dashOrder.v1";
   var TABLE = "user_dashboard_layout";
   var layout = { cats: [], qa: [], pinned: [] };
