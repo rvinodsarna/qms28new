@@ -14,8 +14,8 @@
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css?v=11">
-    <link rel="stylesheet" href="./so-csi-styles.css?v=11">
+    <link rel="stylesheet" href="./styles.css?v=12">
+    <link rel="stylesheet" href="./so-csi-styles.css?v=12">
     <!-- Heavy CDN libs loaded after page is idle — none needed for splash/login -->
     <script>
       window.addEventListener('load', function () {
@@ -79,11 +79,10 @@
 <style id="dash-reorder">#main-content .sd-wrap{display:flex !important;flex-direction:column !important;gap:28px !important;}#main-content .sd-wrap > .sd-grid-bg,#main-content .sd-wrap > .sd-noise-orb{order:0 !important}#main-content .sd-wrap > .glass-card.sd-hero{order:1 !important;margin-bottom:0 !important}#main-content .sd-wrap > .glass-card:has(.sd-qa-grid){order:2 !important;margin-bottom:0 !important}#main-content .sd-wrap > .glass-card:has(.sd-cats-grid){order:3 !important;margin-bottom:0 !important}#main-content .sd-wrap > .rise-categories-panel{order:3 !important;margin-bottom:0 !important}#main-content .sd-wrap > #rise-cat-title{order:3 !important}#main-content .sd-wrap > .sd-cats-grid{order:4 !important}#main-content .sd-wrap > .glass-card{order:5 !important;margin-bottom:0 !important}</style>
 <!-- QMS-GOLD-SHIMMER-START -->
 <style id="qms-gold-shimmer-override">
-  /* Nuclear override — gold shimmer for QMS RISE v28.0 */
+  /* Gold shimmer — scoped to topbar logo subtitle ONLY */
   .topbar-logo-sub,
   .topbar-logo .topbar-logo-sub,
   .topbar .topbar-logo-sub,
-  #topbar-page-title,
   .topbar-logo-text + .topbar-logo-sub {
     background: linear-gradient(
       90deg,
@@ -109,6 +108,16 @@
   @keyframes qmsGoldShimmer {
     0%   { background-position:   0% 50%; }
     100% { background-position: 220% 50%; }
+  }
+  /* Emojis in topbar page title keep their native colors */
+  #topbar-page-title {
+    color: inherit !important;
+    background: none !important;
+    -webkit-text-fill-color: inherit !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    animation: none !important;
+    text-shadow: none !important;
   }
   @media (prefers-reduced-motion: reduce) {
     .topbar-logo-sub { animation: none !important; background-position: 50% 50% !important; }
@@ -251,6 +260,6 @@
 <!-- RISE-TITLE-END -->
   <script src="dashboard-extras.js?v=9" defer></script>
   <script src="rise-heading.js?v=11"></script>
-  <script src="gold-shimmer.js?v=1"></script>
+  <script src="gold-shimmer.js?v=12"></script>
   </body>
 </html>
