@@ -5,9 +5,7 @@
   window.__dashExtras = true;
 
   var EXTRAS = [
-    { icon: "\uD83C\uDFC5", label: "Award & Recognition",     color: "#ffb800", route: "award-recognition" },
-    { icon: "\uD83E\uDD1D", label: "Community Service",       color: "#00e5c0", route: null                },
-    { icon: "\uD83D\uDCDA", label: "Research & Publications", color: "#a855f7", route: null                }
+    { icon: "\uD83C\uDFC5", label: "Award & Recognition", color: "#ffb800", route: "award-recognition" }
   ];
 
   function inject() {
@@ -39,7 +37,7 @@
           '<span class="sd-cat-pct">0.0%</span>' +
         '</div>' +
         '<div class="sd-cat-track"><div class="sd-cat-fill" style="width:0%"></div></div>' +
-        '<div class="sd-cat-meta">Coming soon</div>';
+        '<div class="sd-cat-meta">Tap to view</div>';
 
       card.addEventListener("click", function () {
         if (ex.route && typeof window.navigate === "function") window.navigate(ex.route);
