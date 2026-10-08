@@ -14,8 +14,8 @@
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css?v=12">
-    <link rel="stylesheet" href="./so-csi-styles.css?v=12">
+    <link rel="stylesheet" href="./styles.css?v=13">
+    <link rel="stylesheet" href="./so-csi-styles.css?v=13">
     <!-- Heavy CDN libs loaded after page is idle — none needed for splash/login -->
     <script>
       window.addEventListener('load', function () {
@@ -77,53 +77,7 @@
 
 <style id="green-laser">@keyframes glScan{0%{left:-150px;opacity:0}20%{opacity:1}80%{opacity:1}100%{left:110%;opacity:0}}@keyframes glPulse{0%,100%{box-shadow:0 0 10px rgba(0,255,136,0.5),0 0 20px rgba(0,255,136,0.25),inset 0 0 0 9999px rgba(0,18,8,0.55)}50%{box-shadow:0 0 22px rgba(0,255,136,0.95),0 0 40px rgba(0,255,136,0.5),inset 0 0 0 9999px rgba(0,18,8,0.55)}}.topbar-school-tag{position:relative !important;display:inline-block !important;overflow:hidden !important;padding:3px 18px !important;border-radius:6px !important;border:1px solid rgba(0,255,136,0.7) !important;animation:glPulse 2.4s ease-in-out infinite !important;z-index:1 !important;}.topbar-school-tag::after{content:"" !important;position:absolute !important;top:0;bottom:0 !important;width:90px !important;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent) !important;pointer-events:none !important;animation:glScan 2.8s linear infinite !important;z-index:5 !important;}.topbar-school-tag.luxury-title{background:linear-gradient(100deg,#00ff5e 0%,#00ff88 15%,#7dffb0 30%,#e0ffe0 42%,#7dffb0 55%,#00ff88 70%,#00ff5e 85%,#00ff88 100%) !important;background-size:300% auto !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;color:transparent !important;animation:metallicShift 4s linear infinite !important;font-weight:900 !important;filter:drop-shadow(0 0 4px rgba(0,255,136,0.7)) !important;text-shadow:none !important;}</style>
 <style id="dash-reorder">#main-content .sd-wrap{display:flex !important;flex-direction:column !important;gap:28px !important;}#main-content .sd-wrap > .sd-grid-bg,#main-content .sd-wrap > .sd-noise-orb{order:0 !important}#main-content .sd-wrap > .glass-card.sd-hero{order:1 !important;margin-bottom:0 !important}#main-content .sd-wrap > .glass-card:has(.sd-qa-grid){order:2 !important;margin-bottom:0 !important}#main-content .sd-wrap > .glass-card:has(.sd-cats-grid){order:3 !important;margin-bottom:0 !important}#main-content .sd-wrap > .rise-categories-panel{order:3 !important;margin-bottom:0 !important}#main-content .sd-wrap > #rise-cat-title{order:3 !important}#main-content .sd-wrap > .sd-cats-grid{order:4 !important}#main-content .sd-wrap > .glass-card{order:5 !important;margin-bottom:0 !important}</style>
-<!-- QMS-GOLD-SHIMMER-START -->
-<style id="qms-gold-shimmer-override">
-  /* Gold shimmer — scoped to topbar logo subtitle ONLY */
-  .topbar-logo-sub,
-  .topbar-logo .topbar-logo-sub,
-  .topbar .topbar-logo-sub,
-  .topbar-logo-text + .topbar-logo-sub {
-    background: linear-gradient(
-      90deg,
-      #a16207 0%,
-      #facc15 18%,
-      #fff7c2 38%,
-      #ffd700 50%,
-      #fff7c2 62%,
-      #facc15 82%,
-      #a16207 100%
-    ) !important;
-    background-size: 220% auto !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
-    font-weight: 700 !important;
-    letter-spacing: 1.5px !important;
-    text-shadow: 0 0 8px rgba(255, 200, 60, 0.35) !important;
-    animation: qmsGoldShimmer 3.2s linear infinite !important;
-    will-change: background-position !important;
-  }
-  @keyframes qmsGoldShimmer {
-    0%   { background-position:   0% 50%; }
-    100% { background-position: 220% 50%; }
-  }
-  /* Emojis in topbar page title keep their native colors */
-  #topbar-page-title {
-    color: inherit !important;
-    background: none !important;
-    -webkit-text-fill-color: inherit !important;
-    -webkit-background-clip: border-box !important;
-    background-clip: border-box !important;
-    animation: none !important;
-    text-shadow: none !important;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .topbar-logo-sub { animation: none !important; background-position: 50% 50% !important; }
-  }
-</style>
-<!-- QMS-GOLD-SHIMMER-END -->
+
 </head>
 <body>
 
@@ -260,6 +214,5 @@
 <!-- RISE-TITLE-END -->
   <script src="dashboard-extras.js?v=9" defer></script>
   <script src="rise-heading.js?v=11"></script>
-  <script src="gold-shimmer.js?v=12"></script>
   </body>
 </html>
