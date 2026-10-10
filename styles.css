@@ -298,3 +298,14 @@
   .topbar-logo-sub { animation: none; background-position: 50% 50%; }
 }
 
+
+/* ─── Video overlay buttons: side-by-side at bottom ─── */
+.splash-skip,
+#logout-video-overlay .logout-video-skip {
+    left: calc(50% - 90px) !important;
+    transform: translateX(-50%) !important;
+}
+.splash-unmute {
+    left: calc(50% + 90px) !important;
+    transform: translateX(-50%) !important;
+}
