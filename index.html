@@ -28,6 +28,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css?v=13">
     <link rel="stylesheet" href="./so-csi-styles.css?v=13">
+    <!-- ---- Face-Login stubs (load-time safe) ----------------------- -->
+    <!-- face-auth.js loads lazily ~5-10s after page load. These stubs  -->
+    <!-- prevent ReferenceError if the user clicks face-login buttons   -->
+    <!-- before face-auth.js finishes. The real functions overwrite     -->
+    <!-- these once face-auth.js loads.                                 -->
+    <script>
+      (function () {
+        function busy(action) {
+          var s = document.getElementById('face-login-status');
+          if (s) s.textContent = 'Loading face login... please wait a moment.';
+          window.__faceAuthPendingAction = action;
+          console.warn('[face-auth] still loading - queued:', action);
+        }
+        if (typeof window.__startFaceLoginFlow !== 'function')
+          window.__startFaceLoginFlow = function () { busy('startFlow'); };
+        if (typeof window.__retryFaceLogin !== 'function')
+          window.__retryFaceLogin = function () { busy('retry'); };
+        if (typeof window.__showPasswordPanel !== 'function')
+          window.__showPasswordPanel = function () {
+            var f = document.getElementById('face-login-panel');
+            var p = document.getElementById('password-login-panel');
+            if (f) f.style.display = 'none';
+            if (p) p.style.display = 'block';
+          };
+        if (typeof window.__showFaceLoginPanel !== 'function')
+          window.__showFaceLoginPanel = function () {
+            var f = document.getElementById('face-login-panel');
+            var p = document.getElementById('password-login-panel');
+            if (f) f.style.display = 'block';
+            if (p) p.style.display = 'none';
+          };
+        if (typeof window.__mountFaceEnrollCard !== 'function')
+          window.__mountFaceEnrollCard = function () { /* wait for face-auth */ };
+        if (typeof window.__removeFaceEnrollment !== 'function')
+          window.__removeFaceEnrollment = function () { busy('removeEnrollment'); };
+        if (typeof window.__openFaceEnrollModal !== 'function')
+          window.__openFaceEnrollModal = function () { busy('openEnrollModal'); };
+        if (typeof window.__cancelFaceEnrollModal !== 'function')
+          window.__cancelFaceEnrollModal = function () { /* no-op */ };
+        if (typeof window.__runFaceEnrollCapture !== 'function')
+          window.__runFaceEnrollCapture = function () { busy('runEnrollCapture'); };
+      })();
+    </script>
+    <!-- -------------------------------------------------------------- -->
     <!-- Heavy CDN libs loaded after page is idle — none needed for splash/login -->
     <script>
       window.addEventListener('load', function () {
