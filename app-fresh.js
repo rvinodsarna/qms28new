@@ -2082,6 +2082,24 @@ window.__playLogoutVideoOverlay = function () {
       });
 
       grid.appendChild(card);
+
+      // Load real points for Clubs & Roles card
+      if (ex.route === "student-clubs" && window.qmsSupabase) {
+        window.qmsSupabase
+          .from("student_club_rise_points")
+          .select("total_club_activity_points")
+          .eq("student_id", u.id)
+          .maybeSingle()
+          .then(function (res) {
+            if (!res || !res.data) return;
+            var pts = Number(res.data.total_club_activity_points) || 0;
+            var pct = Math.min(100, (pts / 20) * 100);
+            var pctEl = card.querySelector(".sd-cat-pct");
+            var fillEl = card.querySelector(".sd-cat-fill");
+            if (pctEl) pctEl.textContent = pct.toFixed(1) + "%";
+            if (fillEl) fillEl.style.width = pct + "%";
+          });
+      }
       added++;
     });
 
