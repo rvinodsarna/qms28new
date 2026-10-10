@@ -475,7 +475,7 @@ async function mountEvaluationReport(){
         }
         const d = [];
         for (const e of i) {
-            const t = splitDelimitedLine(e, delimiter),
+            const delimiter = detectDelimiter(e), t = splitDelimitedLine(e, delimiter),
                 a = {};
             for (const [e, n] of Object.entries(l)) a[e] = -1 !== n && n < t.length ? t[n] : "";
             d.push(a)
