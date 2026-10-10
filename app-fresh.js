@@ -2270,3 +2270,5 @@ window.renderAwardRecognition = async function () {
 };
 
 (function(){if(window.__clubsPctDirect)return;window.__clubsPctDirect=true;function f(){var u=window.QMS&&window.QMS.state&&window.QMS.state.user;if(!u)return;var p=Number(u.club_points)||0;var c=Number(u.club_points_cap)||400;var x=Math.min(100,(p/c)*100);document.querySelectorAll('[data-extra-card]').forEach(function(k){var n=k.querySelector('.sd-cat-name');if(!n||n.textContent.indexOf('Clubs')<0)return;var a=k.querySelector('.sd-cat-pct');var b=k.querySelector('.sd-cat-fill');if(a)a.textContent=x.toFixed(1)+'%';if(b)b.style.width=x+'%';});}var i=0;var v=setInterval(function(){f();if(++i>120)clearInterval(v);},500);})();
+
+(function(){if(window.__aiRedirect)return;window.__aiRedirect=true;window.openAIAssistant=function(){var b=document.getElementById('ai-chat-launcher');if(b){b.click();return;}var i=0;var t=setInterval(function(){var b=document.getElementById('ai-chat-launcher');if(b){clearInterval(t);b.click();}else if(++i>40){clearInterval(t);}},100);};})();
