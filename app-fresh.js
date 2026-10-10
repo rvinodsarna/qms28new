@@ -2078,8 +2078,7 @@ window.__playLogoutVideoOverlay = function () {
         '<div class="sd-cat-meta">Tap to view</div>';
 
       card.addEventListener("click", function () {
-        if (ex.route && typeof window.navigate === "function") window.navigate(ex.route);
-        else if (window.QMS && QMS.showToast) QMS.showToast(ex.label + " — coming soon", "info");
+        if (window.QMS && QMS.showToast) QMS.showToast(ex.label + " — coming soon", "info");
       });
 
       grid.appendChild(card);
