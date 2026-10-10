@@ -43,11 +43,11 @@
     PROGRAMMES.forEach(function(p){ out.byProg[p] = 0; });
 
     var progRes = await sb().from("sp_students")
-      .select("programme")
+      .select("programme, enrollment_no")
       .in("programme", PROGRAMMES);
 
     if (!progRes.error && progRes.data) {
-      out.socsi = progRes.data.length;
+      var __PFX = { BCY: 'B', BDS: 'B', DCY: 'D', DIT: 'D' }; progRes.data = progRes.data.filter(function(r){ var p = __PFX[r.programme]; return !p || (r.enrollment_no && r.enrollment_no.charAt(0) === p); }); out.socsi = progRes.data.length;
       progRes.data.forEach(function(r){
         if (out.byProg[r.programme] !== undefined) out.byProg[r.programme]++;
       });

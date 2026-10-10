@@ -39,10 +39,10 @@
     var staff      = (results[4] && results[4].data) || [];
 
     var byProg = {};
-    PROGS.forEach(function (p) { byProg[p] = { students: 0, courses: 0, credits: 0, lecturers: 0, intakes: {} }; });
+    PROGS.forEach(function (p) { byProg[p] = { students: 0, courses: 0, credits: 0, lecturers: 0, intakes: {} }; }); var __PFX = { BCY: 'B', BDS: 'B', DCY: 'D', DIT: 'D' };
 
     students.forEach(function (s) {
-      if (!byProg[s.programme]) return;
+      if (!byProg[s.programme]) return; var __p = __PFX[s.programme]; if (__p && s.enrollment_no && s.enrollment_no.charAt(0) !== __p) return;
       byProg[s.programme].students++;
       var k = s.intake || "Unknown";
       byProg[s.programme].intakes[k] = (byProg[s.programme].intakes[k] || 0) + 1;
@@ -60,7 +60,7 @@
       });
     });
 
-    var totalStudents    = students.length;
+    var totalStudents = PROGS.reduce(function(s, p){ return s + byProg[p].students; }, 0);
     var totalCourses     = courses.length;
     var totalLecturers   = staff.filter(function (s) { return s.role === "lecturer"; }).length;
     var pendingComplaints = complaints.filter(function (c) { return c.status === "Pending"; }).length;
