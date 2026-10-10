@@ -1,11 +1,15 @@
-/* logout-unmute.js v4 - plays unmuted, splash-style mute button */
+/* logout-unmute.js v5 - plays unmuted, splash-style mute button, never auto-mutes */
 (function () {
   "use strict";
-  if (window.__logoutUnmuteV4) return;
-  window.__logoutUnmuteV4 = true;
+  if (window.__logoutUnmuteV5) return;
+  window.__logoutUnmuteV5 = true;
 
   function getVideo() { return document.getElementById("logout-video"); }
   function getOverlay() { return document.getElementById("logout-video-overlay"); }
+
+  function setLabel(btn, muted) {
+    btn.textContent = muted ? "Tap to unmute" : "Sound on";
+  }
 
   function ensureButton() {
     var overlay = getOverlay();
@@ -14,14 +18,14 @@
 
     var existing = overlay.querySelector(".splash-unmute");
     if (existing) {
-      existing.textContent = video.muted ? "Tap to unmute" : "Sound on";
+      setLabel(existing, video.muted);
       return existing;
     }
 
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "splash-unmute";
-    btn.textContent = video.muted ? "Tap to unmute" : "Sound on";
+    setLabel(btn, video.muted);
 
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
@@ -33,25 +37,18 @@
         v.volume = 1;
         try { v.play().catch(function(){}); } catch (err) {}
       }
-      btn.textContent = v.muted ? "Tap to unmute" : "Sound on";
+      setLabel(btn, v.muted);
     });
 
     overlay.appendChild(btn);
     return btn;
   }
 
-  function armVideo() {
-    var v = getVideo();
-    if (!v) return;
-    v.muted = false;
-    v.volume = 1;
-  }
-
   function watch() {
     var overlay = getOverlay();
     if (!overlay) { setTimeout(watch, 500); return; }
-    if (overlay.getAttribute("data-unmute-v4") === "1") return;
-    overlay.setAttribute("data-unmute-v4", "1");
+    if (overlay.getAttribute("data-unmute-v5") === "1") return;
+    overlay.setAttribute("data-unmute-v5", "1");
 
     var wasVisible = false;
     setInterval(function () {
@@ -59,22 +56,22 @@
       var visible = cs.display !== "none" && parseFloat(cs.opacity || "1") > 0;
       if (visible && !wasVisible) {
         wasVisible = true;
-        armVideo();
+        var v = getVideo();
+        if (v) {
+          v.muted = false;
+          v.volume = 1;
+        }
+        setTimeout(ensureButton, 200);
         setTimeout(function () {
-          ensureButton();
-          var v = getVideo();
-          if (v && v.paused && !v.ended) {
-            v.muted = true;
-            v.play().catch(function(){});
-            var b = overlay.querySelector(".splash-unmute");
-            if (b) b.textContent = "Tap to unmute";
-          }
-        }, 300);
+          var b = overlay.querySelector(".splash-unmute");
+          var vid = getVideo();
+          if (b && vid) setLabel(b, vid.muted);
+        }, 1500);
       } else if (!visible && wasVisible) {
         wasVisible = false;
         var b = overlay.querySelector(".splash-unmute");
         if (b) b.remove();
-        overlay.removeAttribute("data-unmute-v4");
+        overlay.removeAttribute("data-unmute-v5");
       }
     }, 200);
   }
@@ -87,5 +84,5 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 
-  console.log("[logout-unmute] v4 ready - sound + splash-style button");
+  console.log("[logout-unmute] v5 ready - never auto-mutes");
 })();
