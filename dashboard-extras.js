@@ -1,4 +1,4 @@
-﻿/* Add extra RISE categories to the dashboard grid */
+/* Add extra RISE categories to the dashboard grid */
 (function () {
   "use strict";
   if (window.__dashExtras) return;
@@ -76,7 +76,7 @@
     var orig = window.navigate;
     window.navigate = function (r) {
       var x = orig.apply(this, arguments);
-      if (r === "dashboard") { tries = 0; setTimeout(boot, 500); }
+      if (r === "dashboard") { tries = 0; var __t=0; var __jv=setInterval(function(){ var __m=document.getElementById("main-content"); if(__m && __m.children.length>0 && !__m.querySelector(".loading-wrap")){ clearInterval(__jv); boot(); } if(++__t>40) clearInterval(__jv); }, 50); }
       return x;
     };
     window.__dashExtrasNav = true;

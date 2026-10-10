@@ -208,7 +208,7 @@
     var orig = window.navigate;
     window.navigate = function (route) {
       var r = orig.apply(this, arguments);
-      if (route === "hop-dashboard" || route === "dashboard") setTimeout(inject, 600);
+      if (route === "hop-dashboard" || route === "dashboard") { var __t=0; var __jv=setInterval(function(){ var __m=document.getElementById("main-content"); if(__m && __m.children.length>0 && !__m.querySelector(".loading-wrap")){ clearInterval(__jv); inject(); } if(++__t>40) clearInterval(__jv); }, 50); }
       return r;
     };
     window.__hopStatsNavWrapped = true;

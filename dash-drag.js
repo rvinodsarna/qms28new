@@ -419,11 +419,15 @@
           g.dataset.sA = "";
           g.removeAttribute("data-sortable-attached");
         });
-        var t = 0;
+        var __t = 0;
         var jv = setInterval(function () {
-          attach();
-          if (++t > 15) clearInterval(jv);
-        }, 400);
+          var __m = document.getElementById("main-content");
+          if (__m && __m.children.length > 0 && !__m.querySelector(".loading-wrap")) {
+            clearInterval(jv);
+            attach();
+          }
+          if (++__t > 60) clearInterval(jv);
+        }, 50);
       }
       return x;
     };
