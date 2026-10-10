@@ -42,18 +42,21 @@
     var out = { socsi: 0, byProg: {}, pending: 0, active: 0, avgPoints: "0.0", sumPoints: 0 };
     PROGRAMMES.forEach(function(p){ out.byProg[p] = 0; });
 
-    var progRes = await sb().from("students")
-      .select("programme,status,points,club_points")
-      .in("programme", PROGRAMMES)
-      .eq("status", "active");
+    var progRes = await sb().from("sp_students")
+      .select("programme")
+      .in("programme", PROGRAMMES);
 
     if (!progRes.error && progRes.data) {
       out.socsi = progRes.data.length;
-      var sumPts = 0;
       progRes.data.forEach(function(r){
         if (out.byProg[r.programme] !== undefined) out.byProg[r.programme]++;
-        sumPts += Number(r.points || 0) + Number(r.club_points || 0);
       });
+    }
+
+    // Fetch RISE points separately from rise_points table
+    var ptsRes = await sb().from("rise_points").select("student_id, pts");
+    if (!ptsRes.error && ptsRes.data) {
+      var sumPts = ptsRes.data.reduce(function(s, r) { return s + Number(r.pts || 0); }, 0);
       out.sumPoints = sumPts;
       out.avgPoints = out.socsi > 0 ? (sumPts / out.socsi).toFixed(1) : "0.0";
     }
