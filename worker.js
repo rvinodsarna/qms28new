@@ -175,7 +175,32 @@ export default {
         }
 
         if (env.ASSETS) {
-            return env.ASSETS.fetch(request);
+            const response = await env.ASSETS.fetch(request);
+
+            if (!response.ok) return response;
+
+            const path = url.pathname;
+            const dotIndex = path.lastIndexOf(".");
+            const ext = dotIndex === -1 ? "" : path.slice(dotIndex + 1).toLowerCase();
+            const headers = new Headers(response.headers);
+
+            if (ext === "html" || path === "/" || path === "" || ext === "") {
+                headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.set("Pragma", "no-cache");
+                headers.set("Expires", "0");
+            } else if (ext === "js" || ext === "css") {
+                headers.set("Cache-Control", "public, max-age=300, must-revalidate");
+            } else if (["png", "jpg", "jpeg", "gif", "webp", "svg", "ico", "woff", "woff2", "ttf", "otf", "mp4", "webm", "mp3"].indexOf(ext) !== -1) {
+                headers.set("Cache-Control", "public, max-age=604800, immutable");
+            } else {
+                headers.set("Cache-Control", "no-cache");
+            }
+
+            return new Response(response.body, {
+                status: response.status,
+                statusText: response.statusText,
+                headers: headers,
+            });
         }
 
         return new Response("Not found", { status: 404 });
