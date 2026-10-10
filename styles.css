@@ -326,3 +326,26 @@
     text-align: center !important;
     white-space: nowrap !important;
 }
+
+/* ─── Fix: dark-themed <select> dropdowns (options were white-on-white) ─── */
+select,
+.spdd-select,
+#spdd-student-select,
+#lkpi-lecturer,
+#lkpi-existing-record,
+#cf-lecturer,
+#cf-existing-record,
+#qd-semester-select {
+    color-scheme: dark;
+}
+
+select option,
+.spdd-select option,
+#spdd-student-select option,
+#lkpi-lecturer option,
+#lkpi-existing-record option,
+#cf-lecturer option,
+#cf-existing-record option {
+    background-color: #1a1a2e !important;
+    color: #e2e8f0 !important;
+}
