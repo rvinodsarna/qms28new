@@ -1,6 +1,6 @@
 /*
  * QMS RISE - Quality Management System
- * Copyright (c) 2026 R. Vinod Sarna, UNIMY. All Rights Reserved.
+ * Copyright (c) 2026 R. Vinod Sarna. All Rights Reserved.
  * Unauthorized copying, modification, or distribution is strictly prohibited.
  * Contact: vinod@unimy.edu.my
  */
