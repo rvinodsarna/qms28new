@@ -1,3 +1,7 @@
+﻿// Face-auth bootstrap: define SUPABASE_URL first
+window.SUPABASE_URL = window.SUPABASE_URL || 'https://dilyshvzxpaplqnrievh.supabase.co';
+window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_g9mKIvBHNuo78WLAnAUIwg_lSi8KGt3';
+
 /* ============================================================================
  * face-auth.js — Client-side robust face recognition for UNIMY QMS RISE.
  * Uses face-api.js (TensorFlow.js) for detection, 68-point landmarks, and
@@ -21,6 +25,27 @@
     if (modelsLoadPromise) return modelsLoadPromise;
     modelsLoadPromise = (async () => {
       try {
+        if (!window.__faceBackendInit) {
+          window.__faceBackendInit = true;
+          try {
+            var __tf = faceapi.tf || window.tf;
+            if (__tf) {
+              var __hasWebGL = false;
+              try {
+                var __c = document.createElement('canvas');
+                __hasWebGL = !!(window.WebGLRenderingContext && (__c.getContext('webgl') || __c.getContext('experimental-webgl')));
+              } catch (e) {}
+              if (__hasWebGL) {
+                await __tf.setBackend('webgl');
+                console.log('[face-auth] backend = webgl');
+              } else {
+                await __tf.setBackend('wasm');
+                console.log('[face-auth] backend = wasm');
+              }
+              await __tf.ready();
+            }
+          } catch (be) { console.warn('[face-auth] backend init:', be); }
+        }
         await Promise.all([
           faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
           faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
