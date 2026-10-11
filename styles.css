@@ -413,3 +413,30 @@ select option,
   transform: translateX(-50%) !important;
   z-index: 3 !important;
 }
+
+/* FIX: logout skip + unmute — both below video, side by side */
+#logout-video-overlay .logout-video-skip {
+  position: absolute !important;
+  bottom: calc(50% - min(70vw, 480px) / 2 - 56px) !important;
+  top: auto !important;
+  left: calc(50% - 100px) !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 3 !important;
+  width: 140px !important;
+  text-align: center !important;
+}
+
+#logout-video-overlay .splash-unmute {
+  position: absolute !important;
+  bottom: calc(50% - min(70vw, 480px) / 2 - 56px) !important;
+  top: auto !important;
+  left: calc(50% + 100px) !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 3 !important;
+  width: 140px !important;
+  padding: 8px 20px !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
