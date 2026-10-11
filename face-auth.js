@@ -1,4 +1,11 @@
-﻿// Face-auth bootstrap: define SUPABASE_URL first
+/*
+ * QMS RISE - Quality Management System
+ * Copyright (c) 2026 R. Vinod Sarna, UNIMY. All Rights Reserved.
+ * Unauthorized copying, modification, or distribution is strictly prohibited.
+ * Contact: vinod@unimy.edu.my
+ */
+
+// Face-auth bootstrap: define SUPABASE_URL first
 window.SUPABASE_URL = window.SUPABASE_URL || 'https://dilyshvzxpaplqnrievh.supabase.co';
 window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_g9mKIvBHNuo78WLAnAUIwg_lSi8KGt3';
 
