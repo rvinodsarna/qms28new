@@ -349,3 +349,56 @@ select option,
     background-color: #1a1a2e !important;
     color: #e2e8f0 !important;
 }
+
+/* ============================================================
+   Splash + Logout video: put buttons BELOW the loader
+   ============================================================ */
+
+/* SPLASH: progress bar higher, buttons stack below it */
+#splash-screen .splash-progress {
+  position: absolute !important;
+  bottom: 140px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 55% !important;
+  max-width: 420px !important;
+  z-index: 3 !important;
+}
+
+#splash-screen .splash-skip,
+#splash-screen .splash-unmute {
+  position: absolute !important;
+  bottom: 80px !important;
+  top: auto !important;
+  transform: none !important;
+  z-index: 3 !important;
+}
+
+#splash-screen .splash-skip {
+  left: calc(50% - 105px) !important;
+  right: auto !important;
+}
+
+#splash-screen .splash-unmute {
+  left: calc(50% + 15px) !important;
+  right: auto !important;
+}
+
+#splash-screen .splash-version {
+  position: absolute !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 3 !important;
+}
+
+/* LOGOUT: skip button below the video */
+#logout-video-overlay .logout-video-skip {
+  position: absolute !important;
+  bottom: 80px !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 3 !important;
+}
