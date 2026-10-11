@@ -402,3 +402,14 @@ select option,
   transform: translateX(-50%) !important;
   z-index: 3 !important;
 }
+
+/* FIX: logout skip button — restore below-video positioning */
+#logout-video-overlay .logout-video-skip {
+  position: absolute !important;
+  bottom: calc(50% - min(70vw, 480px) / 2 - 56px) !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 3 !important;
+}
