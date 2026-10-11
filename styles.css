@@ -440,3 +440,8 @@ select option,
   font-size: 12px !important;
   text-align: center !important;
 }
+
+/* Enhanced sidebar hover (AI Assistant + all items) */
+.sidebar-item:hover{transform:translateX(3px);transition:all .18s ease}
+.sidebar-item:hover .si-icon{background:rgba(0,245,255,.14);border-color:rgba(0,245,255,.5);box-shadow:0 0 10px rgba(0,245,255,.35);transform:scale(1.08);transition:all .18s ease}
+
