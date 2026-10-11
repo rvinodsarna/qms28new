@@ -25,3 +25,14 @@ qms_ui_shots/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local-only secrets and temp files
+BALANCE AND BRAVO KEYS.txt
+*.env
+.env*
+supabase/.temp/
+*.bak
+fix-ai.ps1
+fix-header.ps1
+patch-*.ps1
+ai-fix.txt
