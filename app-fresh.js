@@ -2479,3 +2479,66 @@ window.renderAwardRecognition = async function () {
     return r;
   };
 })();
+
+/* HARD CLEAR PAGE - wipe main-content + modals + body leftovers before every mount */
+(function(){
+  if (window.__hardClearPage) return;
+  window.__hardClearPage = true;
+  
+  function hardClear() {
+    // Main content
+    var mc = document.getElementById('main-content');
+    if (mc) { mc.innerHTML = ''; }
+    
+    // Modal root leftovers
+    var mr = document.getElementById('modal-root');
+    if (mr) { mr.innerHTML = ''; }
+    
+    // Kill any leftover AI drawer/chat panels
+    var leftovers = document.querySelectorAll('#ai-fix-overlay, #ai-drawer-overlay, #ai-chat-panel, .ai-chat-panel, .ai-drawer-overlay');
+    leftovers.forEach(function(el) { 
+      try { el.remove(); } catch(e){} 
+    });
+    
+    // Kill any leftover full-screen overlays that shouldn't persist
+    var overlays = document.querySelectorAll('.modal-overlay:not(.keep-open), .sidebar-backdrop');
+    overlays.forEach(function(el) {
+      if (!el.closest('.keep-open')) { try { el.remove(); } catch(e){} }
+    });
+    
+    // Reset any body-level scroll locks
+    document.body.style.overflow = '';
+    document.body.classList.remove('no-scroll', 'modal-open', 'sidebar-open');
+  }
+  
+  // Wrap navigate: hard-clear BEFORE the original navigate runs
+  var __origNav = window.navigate;
+  var __wrapped = function(section) {
+    // Skip clear for AI assistant (it wants to overlay, not replace)
+    if (section !== 'ai-assistant') {
+      hardClear();
+    }
+    var r = __origNav.apply(this, arguments);
+    // Also clear again 100ms after - kills anything injected mid-render
+    setTimeout(function(){ if (section !== 'ai-assistant') hardClear(); }, 100);
+    // And once more at 800ms - catches async renders
+    setTimeout(function(){ 
+      if (section === 'ai-assistant') return;
+      var mc = document.getElementById('main-content');
+      // Only re-clear if the page is still on the loader (mount failed)
+      if (mc && mc.querySelector('.loading-wrap') && mc.innerHTML.length < 200) {
+        mc.innerHTML = '<div class="empty-state"><div class="empty-title">This section failed to load.</div></div>';
+      }
+    }, 3000);
+    return r;
+  };
+  
+  // Replace navigate
+  window.navigate = __wrapped;
+  
+  // Also hard clear right before each mount case runs
+  // (in case navigate is called internally without going through window.navigate)
+  var __origSetTimeout = window.setTimeout;
+  
+  console.log('[hard-clear-page] installed');
+})();
