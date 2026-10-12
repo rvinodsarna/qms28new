@@ -632,3 +632,15 @@ input,textarea,select{font-size:16px!important}
 #ai-chat-launcher,.ai-chat-launcher,.ai-fab{display:none!important}
 }
 
+
+/* QMS RISE — LOGIN REMEMBER ME FIX */
+.login-card label{white-space:nowrap!important;flex-wrap:nowrap!important}
+.login-card input[type=checkbox]{flex-shrink:0!important;width:18px!important;height:18px!important;margin:0!important;cursor:pointer!important;accent-color:var(--color-primary,#00f5ff)!important}
+.login-card label[for],.login-card label:has(input[type=checkbox]){display:inline-flex!important;align-items:center!important;gap:8px!important;font-size:13px!important;font-weight:500!important;color:var(--color-ink-muted)!important;line-height:1!important}
+.login-card div:has(>label>input[type=checkbox]){display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;flex-wrap:nowrap!important}
+@media (max-width:480px){
+.login-card div:has(>label>input[type=checkbox]){gap:8px!important}
+.login-card label[for],.login-card label:has(input[type=checkbox]){font-size:12.5px!important}
+.login-card .login-link{font-size:12.5px!important;white-space:nowrap!important}
+}
+
