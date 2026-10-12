@@ -2615,3 +2615,27 @@ window.renderAwardRecognition = async function () {
     }
   }, 800);
 })();
+
+/* QR Generator - disable Subject when Event is selected */
+(function(){
+  if (window.__qrSubjDisable) return;
+  window.__qrSubjDisable = true;
+  setInterval(function(){
+    var ev = document.getElementById("qr-event");
+    var subj = document.getElementById("qr-subject");
+    if (!ev || !subj) return;
+    if (ev.__bound) return;
+    ev.__bound = true;
+    function sync() {
+      var hasEvent = !!ev.value;
+      subj.disabled = hasEvent;
+      subj.style.opacity = hasEvent ? "0.45" : "1";
+      subj.style.cursor = hasEvent ? "not-allowed" : "pointer";
+      subj.style.pointerEvents = hasEvent ? "none" : "auto";
+      subj.style.background = hasEvent ? "rgba(255,255,255,0.02)" : "";
+      subj.title = hasEvent ? "Subject is set by the selected event" : "";
+    }
+    ev.addEventListener("change", sync);
+    sync();
+  }, 500);
+})();
