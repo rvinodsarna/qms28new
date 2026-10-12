@@ -40,3 +40,10 @@ QMS-RISE-Copyright-Deposit.txt
 QMS-RISE-Authorship-Declaration.txt
 QMS-RISE-Copyright-Deposit.txt
 QMS-RISE-Authorship-Declaration.txt
+
+# Not a Python project - do not re-add
+requirements.txt
+*.py
+__pycache__/
+Pipfile
+Procfile
