@@ -192,7 +192,7 @@
     <script src="./config.js?v=2" defer></script>
 
     <!-- Main app logic -->
-    <script src="app-fresh.js?v=36" defer></script>
+    <script src="app-fresh.js?v=37" defer></script>
 
     <!-- AI FAQ assistant (uses window.supabase) -->
     
@@ -214,7 +214,7 @@
     if (!v || !b) return;
     b.style.display = 'block'; b.classList.add('ready');
     function refresh(){
-      b.innerHTML = v.muted ? '\uD83D\uDD07 Unmute' : '\uD83D\uDD0A Mute';
+      b.innerHTML = '\uD83D\uDD07 Unmute';
     }
     refresh();
     v.addEventListener('volumechange', refresh);
