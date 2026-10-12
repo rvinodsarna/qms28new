@@ -997,3 +997,13 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 .contacts-list .contact-name,.contacts-list .contact-row .name,.contacts-list>div>div:first-child,.contact-row .name,.contact-row .contact-name,.staff-row .name,.pchat-roster .contact-name,.pchat-roster .name{text-transform:uppercase!important;letter-spacing:.3px!important;font-weight:700!important}
 .contacts-list .contact-name *, .contact-row .name *, .staff-row .name *, .pchat-roster .name *{text-transform:uppercase!important}
 
+
+/* AI chat panel — messages scroll, suggestions pinned */
+#ai-chat-panel,.ai-chat-panel{display:flex!important;flex-direction:column!important;height:100dvh!important;max-height:100dvh!important;overflow:hidden!important}
+#ai-chat-panel .ai-chat-header,.ai-chat-panel .ai-chat-header{flex:0 0 auto!important}
+#ai-chat-panel .ai-chat-messages,.ai-chat-panel .ai-chat-messages,#ai-chat-panel .ai-chat-msgs,{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain!important;padding:14px 14px 90px 14px!important}
+#ai-chat-panel .ai-chat-suggestions,#ai-chat-panel .ai-chat-quick-replies,.ai-chat-panel .ai-chat-suggestions,.ai-chat-panel .ai-chat-quick-replies{flex:0 0 auto!important;max-height:32vh!important;overflow-y:auto!important;background:rgba(8,9,26,.98)!important;border-top:1px solid rgba(0,245,255,.18)!important;padding:10px 12px!important;position:relative!important;z-index:5!important}
+#ai-chat-panel .ai-chat-input-area,#ai-chat-panel .ai-chat-input-row,.ai-chat-panel .ai-chat-input-area,.ai-chat-panel .ai-chat-input-row{flex:0 0 auto!important;background:rgba(8,9,26,.98)!important;border-top:1px solid rgba(0,245,255,.18)!important;padding:10px 12px!important;position:relative!important;z-index:6!important}
+#ai-chat-panel .ai-chat-messages::-webkit-scrollbar,.ai-chat-panel .ai-chat-messages::-webkit-scrollbar{width:4px!important}
+#ai-chat-panel .ai-chat-messages::-webkit-scrollbar-thumb,.ai-chat-panel .ai-chat-messages::-webkit-scrollbar-thumb{background:rgba(0,245,255,.3)!important;border-radius:2px!important}
+
