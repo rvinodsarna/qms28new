@@ -2520,7 +2520,7 @@ window.renderAwardRecognition = async function () {
     }
     var r = __origNav.apply(this, arguments);
     // Also clear again 100ms after - kills anything injected mid-render
-    setTimeout(function(){ if (section !== 'ai-assistant') hardClear(); }, 100);
+    /* 100ms re-clear disabled - was wiping mounted content */
     // And once more at 800ms - catches async renders
     setTimeout(function(){ 
       if (section === 'ai-assistant') return;
