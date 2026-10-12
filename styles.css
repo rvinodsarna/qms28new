@@ -854,3 +854,47 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 #splash-screen .splash-unmute,#logout-video-overlay .splash-unmute{left:calc(50% + 82px)!important}
 }
 
+
+/* iPhone glass — override previous button styles */
+#splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{
+  position:absolute!important;
+  bottom:60px!important;
+  top:auto!important;
+  padding:13px 36px!important;
+  font-size:14px!important;
+  font-weight:600!important;
+  letter-spacing:.2px!important;
+  color:rgba(255,255,255,.92)!important;
+  background:rgba(255,255,255,.13)!important;
+  border:1px solid rgba(255,255,255,.22)!important;
+  border-radius:999px!important;
+  backdrop-filter:blur(28px) saturate(180%)!important;
+  -webkit-backdrop-filter:blur(28px) saturate(180%)!important;
+  box-shadow:0 2px 12px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(255,255,255,.08)!important;
+  cursor:pointer!important;
+  transition:background .18s ease,transform .18s ease,box-shadow .18s ease!important;
+  font-family:inherit!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.25)!important;
+  z-index:5!important;
+  overflow:hidden!important;
+}
+#splash-screen .splash-skip{left:calc(50% - 100px)!important;transform:translateX(-50%)!important}
+#splash-screen .splash-unmute{left:calc(50% + 100px)!important;transform:translateX(-50%)!important}
+#logout-video-overlay .logout-video-skip{left:calc(50% - 100px)!important;transform:translateX(-50%)!important}
+#logout-video-overlay .splash-unmute{left:calc(50% + 100px)!important;transform:translateX(-50%)!important}
+#splash-screen .splash-skip:active,#splash-screen .splash-unmute:active,#logout-video-overlay .logout-video-skip:active,#logout-video-overlay .splash-unmute:active{
+  background:rgba(255,255,255,.22)!important;
+  transform:translateX(-50%) scale(.96)!important;
+}
+#splash-screen .splash-skip:hover,#splash-screen .splash-unmute:hover,#logout-video-overlay .logout-video-skip:hover,#logout-video-overlay .splash-unmute:hover{
+  background:rgba(255,255,255,.18)!important;
+  border-color:rgba(255,255,255,.32)!important;
+}
+@media (max-width:768px){
+#splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{
+  padding:12px 30px!important;font-size:13.5px!important;bottom:52px!important;backdrop-filter:blur(24px) saturate(180%)!important;-webkit-backdrop-filter:blur(24px) saturate(180%)!important;
+}
+#splash-screen .splash-skip,#logout-video-overlay .logout-video-skip{left:calc(50% - 78px)!important}
+#splash-screen .splash-unmute,#logout-video-overlay .splash-unmute{left:calc(50% + 78px)!important}
+}
+
