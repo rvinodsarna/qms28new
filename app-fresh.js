@@ -2575,3 +2575,43 @@ window.renderAwardRecognition = async function () {
 
   console.log('[hop-stats-guard] installed');
 })();
+
+/* QR Generator - Event picker above Subject field */
+(function(){
+  if (window.__qrEventPickerV3) return;
+  window.__qrEventPickerV3 = true;
+
+  function injectEventPicker() {
+    var subjField = document.getElementById('qr-subject');
+    if (!subjField) return;
+    if (document.getElementById('qr-event')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'form-group';
+    wrap.innerHTML = '<label class="form-label">Event / Occasion</label><select class="form-input" id="qr-event"><option value="">-- Loading events... --</option></select>';
+    var subjGroup = subjField.closest('.form-group');
+    if (subjGroup && subjGroup.parentNode) {
+      subjGroup.parentNode.insertBefore(wrap, subjGroup);
+    }
+    if (window.qmsSupabase) {
+      window.qmsSupabase.from('events').select('id, title, event_date, rise_points').order('event_date', { ascending: false }).limit(50).then(function(res){
+        var sel = document.getElementById('qr-event');
+        if (!sel) return;
+        var evs = (res && res.data) || [];
+        var html = '<option value="">-- Select event (optional) --</option>';
+        evs.forEach(function(e){
+          var label = String(e.title || 'Untitled').replace(/</g, '&lt;');
+          var dateStr = e.event_date ? ' | ' + e.event_date : '';
+          var pts = e.rise_points != null ? ' | +' + e.rise_points + 'pts' : '';
+          html += '<option value="' + e.id + '" data-points="' + (e.rise_points||0) + '" data-title="' + label + '">' + label + dateStr + pts + '</option>';
+        });
+        sel.innerHTML = html;
+      });
+    }
+  }
+
+  setInterval(function(){
+    if (document.getElementById('qr-type') && document.getElementById('qr-subject')) {
+      if (!document.getElementById('qr-event')) injectEventPicker();
+    }
+  }, 800);
+})();
