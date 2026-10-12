@@ -26,8 +26,8 @@
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css?v=37">
-    <link rel="stylesheet" href="./so-csi-styles.css?v=37">
+    <link rel="stylesheet" href="./styles.css?v=40">
+    <link rel="stylesheet" href="./so-csi-styles.css?v=40">
     <!-- ---- Face-Login stubs (load-time safe) ----------------------- -->
     <!-- face-auth.js loads lazily ~5-10s after page load. These stubs  -->
     <!-- prevent ReferenceError if the user clicks face-login buttons   -->
@@ -148,7 +148,7 @@
             <div class="bar" id="splash-progress-bar"></div>
         </div>
         <button class="splash-skip" id="splash-skip-btn">Skip</button>
-        <button class="splash-unmute" id="splash-unmute-btn" style="display:block;">🔇 Tap for sound</button>
+        <button class="splash-unmute" id="splash-unmute-btn" style="display:block;">🔇 Unmute</button>
         <div class="splash-version">UNIVERSITY MALAYSIA OF COMPUTER SCIENCE &amp; ENGINEERING</div>
     </div>
 
@@ -192,7 +192,7 @@
     <script src="./config.js?v=2" defer></script>
 
     <!-- Main app logic -->
-    <script src="app-fresh.js?v=34" defer></script>
+    <script src="app-fresh.js?v=35" defer></script>
 
     <!-- AI FAQ assistant (uses window.supabase) -->
     
@@ -212,7 +212,7 @@
     var v = document.getElementById('splash-video');
     var b = document.getElementById('splash-unmute-btn');
     if (!v || !b) return;
-    b.style.display = 'block';
+    b.style.display = 'block'; b.classList.add('ready');
     function refresh(){
       b.innerHTML = v.muted ? '\uD83D\uDD07 Unmute' : '\uD83D\uDD0A Mute';
     }
