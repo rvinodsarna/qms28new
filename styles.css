@@ -975,3 +975,9 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 .topbar-title{justify-content:flex-start!important;padding-left:8px!important}
 .topbar-title #topbar-page-title{text-align:left!important}
 
+
+/* Force splash buttons visible immediately */
+#splash-screen .splash-skip,#splash-screen .splash-unmute{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+#splash-screen .splash-unmute{display:block!important}
+#splash-unmute-btn{display:block!important;visibility:visible!important}
+
