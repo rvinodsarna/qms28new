@@ -812,3 +812,45 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 .sd-qa-tile{padding:10px 6px!important}
 }
 
+
+/* Splash + Logout buttons — soft frosted pill (matches reference) */
+#splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{
+  position:absolute!important;
+  bottom:60px!important;
+  top:auto!important;
+  padding:14px 42px!important;
+  font-size:14px!important;
+  font-weight:500!important;
+  letter-spacing:.3px!important;
+  color:#9fb3c8!important;
+  background:linear-gradient(180deg,rgba(45,68,95,.75),rgba(30,48,72,.85))!important;
+  border:1px solid rgba(120,150,185,.35)!important;
+  border-radius:999px!important;
+  backdrop-filter:blur(14px)!important;
+  -webkit-backdrop-filter:blur(14px)!important;
+  box-shadow:0 4px 16px rgba(0,20,40,.35),inset 0 1px 0 rgba(255,255,255,.08)!important;
+  cursor:pointer!important;
+  transition:all .2s ease!important;
+  font-family:inherit!important;
+  text-shadow:none!important;
+  z-index:5!important;
+}
+#splash-screen .splash-skip{left:calc(50% - 100px)!important;transform:translateX(-50%)!important}
+#splash-screen .splash-unmute{left:calc(50% + 100px)!important;transform:translateX(-50%)!important}
+#logout-video-overlay .logout-video-skip{left:calc(50% - 100px)!important;transform:translateX(-50%)!important}
+#logout-video-overlay .splash-unmute{left:calc(50% + 100px)!important;transform:translateX(-50%)!important}
+#splash-screen .splash-skip:hover,#splash-screen .splash-unmute:hover,#logout-video-overlay .logout-video-skip:hover,#logout-video-overlay .splash-unmute:hover{
+  color:#d5e3f0!important;
+  background:linear-gradient(180deg,rgba(55,82,115,.85),rgba(38,60,90,.92))!important;
+  border-color:rgba(150,190,225,.5)!important;
+  transform:translateX(-50%) translateY(-1px)!important;
+  box-shadow:0 6px 20px rgba(0,40,80,.45),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+@media (max-width:768px){
+#splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{
+  padding:12px 32px!important;font-size:13px!important;bottom:54px!important;
+}
+#splash-screen .splash-skip,#logout-video-overlay .logout-video-skip{left:calc(50% - 82px)!important}
+#splash-screen .splash-unmute,#logout-video-overlay .splash-unmute{left:calc(50% + 82px)!important}
+}
+
