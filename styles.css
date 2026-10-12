@@ -981,3 +981,14 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 #splash-screen .splash-unmute{display:block!important}
 #splash-unmute-btn{display:block!important;visibility:visible!important}
 
+
+/* AI chat: messages never hidden by suggestions */
+#ai-fix-msgs{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;padding:16px 14px 100px 14px!important;scroll-behavior:smooth!important}
+#ai-fix-box{display:flex!important;flex-direction:column!important;height:100dvh!important;max-height:100dvh!important}
+#ai-fix-box>div:last-child{flex:0 0 auto!important;background:rgba(8,9,26,.98)!important;backdrop-filter:blur(14px)!important;border-top:1px solid rgba(0,245,255,.15)!important;position:relative!important;z-index:5!important}
+#ai-fix-overlay{z-index:999999!important}
+/* Legacy AI drawer too */
+.ai-drawer{display:flex!important;flex-direction:column!important;height:100vh!important}
+.ai-drawer-msgs{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;padding-bottom:20px!important}
+.ai-quick-replies{flex:0 0 auto!important;position:sticky!important;bottom:0!important;background:rgba(8,9,26,.98)!important;border-top:1px solid rgba(0,245,255,.15)!important}
+
