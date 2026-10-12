@@ -2495,7 +2495,7 @@ window.renderAwardRecognition = async function () {
     if (mr) { mr.innerHTML = ''; }
     
     // Kill any leftover AI drawer/chat panels
-    var leftovers = document.querySelectorAll('#ai-fix-overlay, #ai-drawer-overlay, #ai-chat-panel, .ai-chat-panel, .ai-drawer-overlay');
+    var leftovers = document.querySelectorAll('#ai-fix-overlay, #ai-drawer-overlay, .ai-drawer-overlay');
     leftovers.forEach(function(el) { 
       try { el.remove(); } catch(e){} 
     });
