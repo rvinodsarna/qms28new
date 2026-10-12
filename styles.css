@@ -921,3 +921,30 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 #sidebar{transform:none!important;position:relative!important}
 }
 
+
+/* Splash + logout buttons — compact, tight gap */
+#splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{padding:10px 24px!important;font-size:13px!important;min-width:105px!important;bottom:52px!important;border-radius:999px!important}
+#splash-screen .splash-skip,#logout-video-overlay .logout-video-skip{left:calc(50% - 68px)!important}
+#splash-screen .splash-unmute,#logout-video-overlay .splash-unmute{left:calc(50% + 68px)!important}
+@media (max-width:768px){
+#splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{padding:9px 20px!important;font-size:12px!important;min-width:90px!important;bottom:44px!important}
+#splash-screen .splash-skip,#logout-video-overlay .logout-video-skip{left:calc(50% - 58px)!important}
+#splash-screen .splash-unmute,#logout-video-overlay .splash-unmute{left:calc(50% + 58px)!important}
+}
+
+
+/* TOPBAR - locked layout, nothing shifts between pages */
+.topbar{display:grid!important;grid-template-columns:280px 1fr auto!important;align-items:center!important;gap:16px!important;padding:8px 16px!important}
+.topbar-logo{grid-column:1!important;display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important}
+.topbar-title{grid-column:2!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;flex-wrap:nowrap!important;overflow:hidden!important;min-width:0!important}
+.topbar-title #topbar-page-title,.topbar-title #topbar-page-title{flex:0 0 160px!important;width:160px!important;max-width:160px!important;text-overflow:ellipsis!important;overflow:hidden!important;white-space:nowrap!important;text-align:center!important}
+.topbar-partner-logo{flex-shrink:0!important;height:28px!important;width:auto!important}
+.topbar-school-tag{flex:1 1 auto!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;text-align:center!important}
+.topbar>div:last-child,.topbar-user{grid-column:3!important;flex-shrink:0!important;display:flex!important;align-items:center!important;gap:10px!important}
+@media (max-width:900px){
+.topbar{grid-template-columns:auto 1fr auto!important;gap:8px!important;padding:6px 10px!important}
+.topbar-title #topbar-page-title{flex-basis:100px!important;width:100px!important;max-width:100px!important;font-size:12px!important}
+.topbar-partner-logo{height:22px!important}
+.topbar-school-tag{font-size:11px!important}
+}
+
