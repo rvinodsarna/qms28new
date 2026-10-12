@@ -2416,3 +2416,9 @@ window.renderAwardRecognition = async function () {
     }, 30000);
   };
 })();
+
+/* Hardened closeSidebar - force hide on mobile with inline transform */
+(function(){if(window.__closeSidebarHard)return;window.__closeSidebarHard=true;var __origClose=window.closeSidebar;window.closeSidebar=function(){var e=document.getElementById('sidebar');if(!e){if(typeof __origClose==='function')return __origClose();return}e.classList.remove('open');e.style.transform='translateX(-100%)';e.style.transition='transform .25s ease';e.style.pointerEvents='none';setTimeout(function(){e.style.transform='';e.style.pointerEvents=''},400);if(window.matchMedia('(min-width:901px)').matches){e.style.transform='';e.style.pointerEvents=''}};})();
+
+/* Mobile: auto-close sidebar on item tap (capture phase, fires first) */
+(function(){if(window.__sidebarAutoHide)return;window.__sidebarAutoHide=true;function hide(){var sb=document.getElementById('sidebar');if(!sb)return;if(sb.classList.contains('open')){sb.classList.remove('open');sb.style.transform='translateX(-100%)';setTimeout(function(){sb.style.transform=''},350)}}document.addEventListener('click',function(e){if(e.target.closest('.sidebar-item')){hide()}},true);document.addEventListener('touchstart',function(e){if(e.target.closest('.sidebar-item')){hide()}},{passive:true,capture:true});})();
