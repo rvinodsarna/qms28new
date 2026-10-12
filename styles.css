@@ -898,3 +898,8 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 #splash-screen .splash-unmute,#logout-video-overlay .splash-unmute{left:calc(50% + 78px)!important}
 }
 
+
+/* Sidebar SVG icon sizing */
+.sidebar-item .si-icon svg{width:16px;height:16px;display:block;stroke-width:2}
+.sidebar-item.active .si-icon svg{stroke-width:2.2}
+
