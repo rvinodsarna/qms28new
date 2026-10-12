@@ -948,3 +948,20 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 .topbar-school-tag{font-size:11px!important}
 }
 
+
+/* TOPBAR - compact flex, no truncation, no shifting */
+.topbar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;padding:6px 14px!important;flex-wrap:nowrap!important}
+.topbar-logo{flex:0 0 auto!important;display:flex!important;align-items:center!important;gap:8px!important;min-width:0!important}
+.topbar-title{flex:1 1 auto!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;flex-wrap:nowrap!important;overflow:hidden!important;min-width:0!important;padding:0!important;margin:0!important}
+.topbar-title #topbar-page-title,.topbar-title #topbar-page-title{flex:0 0 auto!important;width:auto!important;max-width:none!important;text-overflow:clip!important;overflow:visible!important;white-space:nowrap!important;text-align:left!important;font-size:13px!important;padding:0!important;border:none!important;text-decoration:none!important;box-shadow:none!important}
+#topbar-page-title::after{display:none!important;content:none!important}
+.topbar-partner-logo{flex:0 0 auto!important;height:24px!important;width:auto!important;max-width:none!important}
+.topbar-school-tag{flex:0 1 auto!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;text-align:center!important;font-size:12px!important;padding:0 4px!important}
+.topbar>div:last-child,.topbar-user{flex:0 0 auto!important;display:flex!important;align-items:center!important;gap:8px!important}
+@media (max-width:900px){
+.topbar{gap:6px!important;padding:5px 8px!important}
+.topbar-title #topbar-page-title{font-size:11px!important}
+.topbar-partner-logo{height:20px!important}
+.topbar-school-tag{font-size:10px!important;max-width:120px!important}
+}
+
