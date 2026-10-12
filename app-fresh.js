@@ -2542,3 +2542,36 @@ window.renderAwardRecognition = async function () {
   
   console.log('[hard-clear-page] installed');
 })();
+
+/* HOP-STATS GUARD â€” only allow its panel on the HOP/Dean Dashboard pages */
+(function(){
+  if (window.__hopStatsGuard) return;
+  window.__hopStatsGuard = true;
+
+  function currentSection() {
+    return (window.QMS && window.QMS.state && window.QMS.state.currentSection) || '';
+  }
+
+  function isAllowedSection() {
+    var s = currentSection();
+    return s === 'hop-dashboard' || s === 'dean-dashboard' || s === 'dashboard';
+  }
+
+  function removeStrayStatsPanels() {
+    if (isAllowedSection()) return;
+    var panels = document.querySelectorAll('[data-hop-stats="1"]');
+    for (var i = 0; i < panels.length; i++) {
+      try { panels[i].remove(); } catch (e) {}
+    }
+    // Also remove common wrapper class names that hop-stats uses
+    var extra = document.querySelectorAll('.hop-stats-panel, .hop-command-overview');
+    for (var j = 0; j < extra.length; j++) {
+      try { extra[j].remove(); } catch (e) {}
+    }
+  }
+
+  // Check every 250ms â€” kills any stray injection fast
+  setInterval(removeStrayStatsPanels, 250);
+
+  console.log('[hop-stats-guard] installed');
+})();
