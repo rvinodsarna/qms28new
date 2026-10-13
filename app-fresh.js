@@ -2654,3 +2654,39 @@ window.renderAwardRecognition = async function () {
     try { window.navigate(sec); } catch(err){ console.warn("nav err", err); }
   }, true);
 })();
+
+/* Conditional face login: show only for returning users */
+(function(){
+  if (window.__faceLoginConditionalV1) return;
+  window.__faceLoginConditionalV1 = true;
+
+  function isReturning() {
+    try { return localStorage.getItem('qms.returningUser') === '1'; }
+    catch(e) { return false; }
+  }
+
+  function apply() {
+    if (!document.body) return;
+    if (isReturning()) {
+      document.body.classList.add('show-face-login');
+    } else {
+      document.body.classList.remove('show-face-login');
+    }
+  }
+
+  function detectLoginSuccess() {
+    var lp = document.querySelector('.login-page');
+    var mainContent = document.getElementById('main-content');
+    var u = window.QMS && window.QMS.state && window.QMS.state.user;
+    if (!lp && mainContent && u && u.id) {
+      try { localStorage.setItem('qms.returningUser', '1'); } catch(e) {}
+    }
+  }
+
+  setInterval(function(){ apply(); detectLoginSuccess(); }, 800);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', apply);
+  } else {
+    apply();
+  }
+})();

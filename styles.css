@@ -448,7 +448,7 @@ select option,
 
 
 /* ============================================================
-   QMS RISE — MOBILE FINAL FIX
+   QMS RISE ï¿½ MOBILE FINAL FIX
    Last in cascade so it wins all overrides.
    Only affects screens <= 768px. Desktop untouched.
    ============================================================ */
@@ -593,7 +593,7 @@ select option,
   .main-content { padding: 8px !important; }
 }
 
-/* QMS RISE — MOBILE ROUND 2 — AI chat, Study Plan Maker, Contacts */
+/* QMS RISE ï¿½ MOBILE ROUND 2 ï¿½ AI chat, Study Plan Maker, Contacts */
 @media (max-width:768px){
 #ai-fix-box{height:100dvh!important;max-height:100dvh!important;display:flex!important;flex-direction:column!important}
 #ai-fix-msgs{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;padding:12px!important}
@@ -619,7 +619,7 @@ input,textarea,select{font-size:16px!important}
 }
 
 
-/* QMS RISE — SPLASH MOBILE FIX — video fullscreen, buttons stacked */
+/* QMS RISE ï¿½ SPLASH MOBILE FIX ï¿½ video fullscreen, buttons stacked */
 @media (max-width:768px){
 #splash-screen{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;overflow:hidden!important;background:#05051a!important}
 #splash-screen>video,#splash-video{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;object-fit:cover!important;z-index:1!important}
@@ -633,7 +633,7 @@ input,textarea,select{font-size:16px!important}
 }
 
 
-/* QMS RISE — LOGIN REMEMBER ME FIX */
+/* QMS RISE ï¿½ LOGIN REMEMBER ME FIX */
 .login-card label{white-space:nowrap!important;flex-wrap:nowrap!important}
 .login-card input[type=checkbox]{flex-shrink:0!important;width:18px!important;height:18px!important;margin:0!important;cursor:pointer!important;accent-color:var(--color-primary,#00f5ff)!important}
 .login-card label[for],.login-card label:has(input[type=checkbox]){display:inline-flex!important;align-items:center!important;gap:8px!important;font-size:13px!important;font-weight:500!important;color:var(--color-ink-muted)!important;line-height:1!important}
@@ -645,7 +645,7 @@ input,textarea,select{font-size:16px!important}
 }
 
 
-/* QMS RISE — Mobile fixes: Quick Actions 2-col, hide dotted orbit, course wrap */
+/* QMS RISE ï¿½ Mobile fixes: Quick Actions 2-col, hide dotted orbit, course wrap */
 @media (max-width:768px){
 .sd-qa-grid{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:10px!important}
 .sd-qa-tile{padding:14px 8px!important;min-height:110px!important;font-size:10.5px!important;gap:8px!important}
@@ -662,7 +662,7 @@ input,textarea,select{font-size:16px!important}
 }
 
 
-/* QMS RISE — Topbar: UNIMY logo image + gold shimmer on version */
+/* QMS RISE ï¿½ Topbar: UNIMY logo image + gold shimmer on version */
 .topbar-logo-img{height:28px!important;width:auto!important;max-width:120px!important;object-fit:contain!important;display:block!important;margin-bottom:2px!important;filter:drop-shadow(0 0 8px rgba(255,20,80,.35))!important}
 .topbar-logo-sub.gold-shimmer{display:inline-block!important;font-family:'Space Grotesk',var(--font-display),sans-serif!important;font-weight:800!important;font-size:13px!important;letter-spacing:.8px!important;background:linear-gradient(100deg,#b8860b 0%,#ffd700 18%,#fff9d0 32%,#ffcc00 46%,#fffbe6 60%,#ffb800 74%,#b8860b 100%)!important;background-size:300% auto!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important;animation:goldShimmerSlide 3s linear infinite!important}
 @keyframes goldShimmerSlide{0%{background-position:0% 50%}100%{background-position:300% 50%}}
@@ -672,7 +672,7 @@ input,textarea,select{font-size:16px!important}
 }
 
 
-/* UNIMY text — silver shimmering effect */
+/* UNIMY text ï¿½ silver shimmering effect */
 .topbar-logo-text.silver-shimmer{display:inline-block!important;font-family:'Space Grotesk',var(--font-display),sans-serif!important;font-weight:800!important;font-size:15px!important;letter-spacing:2px!important;background:linear-gradient(100deg,#6b7280 0%,#c0c0c0 18%,#f8fafc 32%,#e5e7eb 46%,#ffffff 60%,#c0c0c0 74%,#6b7280 100%)!important;background-size:300% auto!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important;animation:silverShimmerSlide 3.5s linear infinite!important;position:relative!important}
 @keyframes silverShimmerSlide{0%{background-position:0% 50%}100%{background-position:300% 50%}}
 @media (max-width:768px){
@@ -680,7 +680,7 @@ input,textarea,select{font-size:16px!important}
 }
 
 
-/* Topbar: UNIMY (top, silver) / QMS RISE v28.0 (below, gold) — clean stack */
+/* Topbar: UNIMY (top, silver) / QMS RISE v28.0 (below, gold) ï¿½ clean stack */
 .topbar-logo{display:flex!important;align-items:center!important;gap:10px!important}
 .topbar-logo>div:last-child{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:1px!important;line-height:1!important}
 .topbar-logo-text.silver-shimmer{line-height:1.05!important;margin:0!important;display:block!important}
@@ -691,7 +691,7 @@ input,textarea,select{font-size:16px!important}
 }
 
 
-/* MAXIMUM GOLD GLITTER — overrides previous shimmer */
+/* MAXIMUM GOLD GLITTER ï¿½ overrides previous shimmer */
 .topbar-logo-sub.gold-shimmer{display:inline-block!important;font-family:'Space Grotesk',var(--font-display),sans-serif!important;font-weight:900!important;font-size:14px!important;letter-spacing:1.2px!important;background:linear-gradient(100deg,#7a4f00 0%,#d4a017 8%,#ffd700 18%,#fffacd 28%,#ffe066 36%,#fff9d0 44%,#ffcc00 52%,#ffd700 60%,#d4a017 70%,#7a4f00 80%,#d4a017 90%,#ffd700 100%)!important;background-size:400% auto!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important;animation:goldBlaze 2.2s linear infinite!important;text-shadow:0 0 6px rgba(255,215,0,.5)!important;filter:drop-shadow(0 0 10px rgba(255,193,7,.55)) drop-shadow(0 0 20px rgba(255,140,0,.35))!important}
 @keyframes goldBlaze{0%{background-position:0% 50%}100%{background-position:400% 50%}}
 @media (max-width:768px){
@@ -699,7 +699,7 @@ input,textarea,select{font-size:16px!important}
 }
 
 
-/* QMS RISE — iOS-quality native scrolling */
+/* QMS RISE ï¿½ iOS-quality native scrolling */
 html,body{-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:none!important}
 .main-content,.sidebar,#main-content,.modal-box,.ai-drawer-msgs,.lb-list,.lb-detail,.sd-cat-card,.sd-qa-tile,.glass-card{
   -webkit-overflow-scrolling:touch!important;
@@ -719,9 +719,9 @@ html,body{overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow
 }
 
 
-/* QMS RISE — iOS scroll performance: kill GPU killers on mobile */
+/* QMS RISE ï¿½ iOS scroll performance: kill GPU killers on mobile */
 @media (max-width:900px){
-/* Replace backdrop-filter blur with solid bg — visually ~same, 10x faster */
+/* Replace backdrop-filter blur with solid bg ï¿½ visually ~same, 10x faster */
 .glass-card,.sd-cat-card,.sd-qa-tile,.topbar,.sidebar,.modal-box,.ai-drawer,.ai-chat-panel,.login-card,.sd-scan-border,.lb-podium-card,.lb-row,.kpi-card,.dh-gauge-card,.dh-const-card,.dh-hex-btn,.pc-card-frame,.lkpi-item-card,.lkpi-gauge-card,.evr-pod,.courses-card,.course-pool,.course-pill{
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
@@ -732,13 +732,13 @@ html,body{overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow
   -webkit-backdrop-filter:none!important;
   background:rgba(3,5,15,.88)!important
 }
-/* Reduce animation count — pause decorative ones */
+/* Reduce animation count ï¿½ pause decorative ones */
 .sd-grid-bg,.sd-noise-orb,.sd-ai-orb-core,.sd-ring-orbit,.sd-ring,.sd-scan-border::before,.sd-neon-text,.dh-orbit-ring,.dh-sat,.dh-core,.sd-tier-chip,.luxury-title::after,.ai-status-dot,.ai-fab-ping,.sd-sync-dot,.sd-cat-fill,.sd-cat-fill::after{
   animation:none!important
 }
-/* Keep only essential ones — progress + gradient text */
+/* Keep only essential ones ï¿½ progress + gradient text */
 .topbar-logo-sub.gold-shimmer,.topbar-logo-text.silver-shimmer{animation-duration:4s!important}
-/* Reduce shadows — cheaper to composite */
+/* Reduce shadows ï¿½ cheaper to composite */
 .glass-card,.sd-cat-card,.kpi-card,.lb-row,.dh-gauge-card{
   box-shadow:0 2px 8px rgba(0,0,0,.35)!important
 }
@@ -755,18 +755,18 @@ html,body{overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow
 }
 
 
-/* QMS RISE — Android mobile tuning */
+/* QMS RISE ï¿½ Android mobile tuning */
 @media (max-width:480px){
 /* 1. Prevent Chrome auto-zoom on input focus */
 input,select,textarea{font-size:16px!important}
-/* 2. Bigger touch targets — 44px minimum per Material Design */
+/* 2. Bigger touch targets ï¿½ 44px minimum per Material Design */
 .btn,button,.sidebar-item,.sd-qa-tile,.user-type-tab,.ai-quick-chip{min-height:44px!important;padding:12px 16px!important}
 .sd-qa-tile{min-height:100px!important}
 /* 3. Safe-area insets for notched phones (Pixel, Samsung Edge) */
 body{padding-left:env(safe-area-inset-left)!important;padding-right:env(safe-area-inset-right)!important}
 .topbar{padding-top:env(safe-area-inset-top,0)!important}
 .main-content{padding-bottom:calc(80px + env(safe-area-inset-bottom))!important}
-/* 4. Fix Android URL bar shrink — use dvh not vh */
+/* 4. Fix Android URL bar shrink ï¿½ use dvh not vh */
 #splash-screen,.modal-overlay,.login-page{height:100dvh!important;min-height:100dvh!important}
 /* 5. Tighter spacing for narrow Android screens (360px) */
 .glass-card{padding:12px!important;margin-bottom:10px!important}
@@ -780,7 +780,7 @@ body{padding-left:env(safe-area-inset-left)!important;padding-right:env(safe-are
 .kpi-label{font-size:9.5px!important}
 /* 7. Sidebar: max 82vw, closer to Material drawer width */
 .sidebar{width:78vw!important;max-width:280px!important}
-/* 8. Font rendering — Android defaults are heavier */
+/* 8. Font rendering ï¿½ Android defaults are heavier */
 body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smoothing:antialiased!important}
 .card-title,.page-title,.sidebar-item,.lb-row-name,.kpi-value{font-weight:700!important}
 /* 9. Leaderboard rows: stack nicely */
@@ -788,7 +788,7 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 .lb-row-identity{flex:1 1 100%!important;min-width:0!important}
 .lb-row-name{font-size:13px!important;word-break:break-word!important;white-space:normal!important}
 .lb-row-sub{flex-wrap:wrap!important;gap:4px!important}
-/* 10. Study Plan Maker — narrower stacks */
+/* 10. Study Plan Maker ï¿½ narrower stacks */
 .spm-program-tabs>*{font-size:11px!important;padding:8px 10px!important}
 /* 11. Modals: bottom sheet style on Android */
 .modal-overlay{padding:0!important;align-items:flex-end!important}
@@ -813,7 +813,7 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 }
 
 
-/* Splash + Logout buttons — soft frosted pill (matches reference) */
+/* Splash + Logout buttons ï¿½ soft frosted pill (matches reference) */
 #splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{
   position:absolute!important;
   bottom:60px!important;
@@ -855,7 +855,7 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 }
 
 
-/* iPhone glass — override previous button styles */
+/* iPhone glass ï¿½ override previous button styles */
 #splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{
   position:absolute!important;
   bottom:60px!important;
@@ -912,7 +912,7 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 #splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{min-width:120px!important;text-align:center!important;white-space:nowrap!important}
 
 
-/* SIDEBAR — CSS-ONLY FIX */
+/* SIDEBAR ï¿½ CSS-ONLY FIX */
 @media (max-width:900px){
 #sidebar{position:fixed!important;top:0!important;left:0!important;width:78vw!important;max-width:280px!important;height:100vh!important;transform:translateX(-100%)!important;transition:transform .25s ease!important;z-index:9999!important;overflow-y:auto!important}
 #sidebar.open{transform:translateX(0)!important}
@@ -922,7 +922,7 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 }
 
 
-/* Splash + logout buttons — compact, tight gap */
+/* Splash + logout buttons ï¿½ compact, tight gap */
 #splash-screen .splash-skip,#splash-screen .splash-unmute,#logout-video-overlay .logout-video-skip,#logout-video-overlay .splash-unmute{padding:10px 24px!important;font-size:13px!important;min-width:105px!important;bottom:52px!important;border-radius:999px!important}
 #splash-screen .splash-skip,#logout-video-overlay .logout-video-skip{left:calc(50% - 68px)!important}
 #splash-screen .splash-unmute,#logout-video-overlay .splash-unmute{left:calc(50% + 68px)!important}
@@ -993,12 +993,12 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 .ai-quick-replies{flex:0 0 auto!important;position:sticky!important;bottom:0!important;background:rgba(8,9,26,.98)!important;border-top:1px solid rgba(0,245,255,.15)!important}
 
 
-/* Contacts — all names UPPERCASE, consistent */
+/* Contacts ï¿½ all names UPPERCASE, consistent */
 .contacts-list .contact-name,.contacts-list .contact-row .name,.contacts-list>div>div:first-child,.contact-row .name,.contact-row .contact-name,.staff-row .name,.pchat-roster .contact-name,.pchat-roster .name{text-transform:uppercase!important;letter-spacing:.3px!important;font-weight:700!important}
 .contacts-list .contact-name *, .contact-row .name *, .staff-row .name *, .pchat-roster .name *{text-transform:uppercase!important}
 
 
-/* AI chat panel — messages scroll, suggestions pinned */
+/* AI chat panel ï¿½ messages scroll, suggestions pinned */
 #ai-chat-panel,.ai-chat-panel{display:flex!important;flex-direction:column!important;height:100dvh!important;max-height:100dvh!important;overflow:hidden!important}
 #ai-chat-panel .ai-chat-header,.ai-chat-panel .ai-chat-header{flex:0 0 auto!important}
 #ai-chat-panel .ai-chat-messages,.ai-chat-panel .ai-chat-messages,#ai-chat-panel .ai-chat-msgs,{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain!important;padding:14px 14px 90px 14px!important}
@@ -1021,7 +1021,7 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 #splash-screen .splash-skip,#splash-screen .splash-unmute{bottom:12vh!important;z-index:100!important}
 #splash-screen .splash-progress{bottom:20vh!important}
 #splash-screen .splash-version{bottom:3vh!important}
-/* 3. Contacts — long names wrap properly */
+/* 3. Contacts ï¿½ long names wrap properly */
 .contact-row,.contacts-list>*,.staff-row{flex-wrap:wrap!important;align-items:flex-start!important}
 .contact-name,.contact-row .name,.staff-row .name{flex:1 1 100%!important;white-space:normal!important;word-break:break-word!important;overflow-wrap:anywhere!important;max-width:100%!important;line-height:1.3!important;margin-bottom:4px!important}
 .contact-status,.contact-row .status{flex:0 0 auto!important;align-self:flex-end!important;margin-left:auto!important}
@@ -1030,11 +1030,23 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 .spm-program-tabs>*,.study-plan-tabs>*,.programme-tabs>*{flex:0 0 auto!important;white-space:nowrap!important;min-width:auto!important}
 .spm-program-tabs::-webkit-scrollbar,.study-plan-tabs::-webkit-scrollbar,.programme-tabs::-webkit-scrollbar{display:none!important}
 
-body .face-login-btn,body .face-login-link,body [onclick*="__startFaceLoginFlow"],body [onclick*="__retryFaceLogin"],body [onclick*="FaceLogin"]{display:none!important;visibility:hidden!important}
+
 @media (max-width:900px){
 #splash-screen{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;background:#000!important}
 #splash-video,#splash-bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;object-fit:cover!important}
 #splash-screen .splash-skip,#splash-screen .splash-unmute{bottom:10vh!important}
 #splash-screen .splash-progress{bottom:18vh!important}
 }
-[onclick*="__showFaceLoginPanel"]{display:none!important;visibility:hidden!important;height:0!important;width:0!important;overflow:hidden!important}
+
+
+
+/* Conditional face login - hidden by default, shown for returning users */
+[onclick*="__showFaceLoginPanel"] { display: none !important; }
+#face-login-panel { display: none !important; }
+body.show-face-login [onclick*="__showFaceLoginPanel"] {
+    display: inline-block !important;
+    visibility: visible !important;
+    height: auto !important;
+    width: auto !important;
+    overflow: visible !important;
+}
