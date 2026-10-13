@@ -1030,3 +1030,10 @@ body,.glass-card,.sd-cat-card,.lb-row{font-weight:400!important;-webkit-font-smo
 .spm-program-tabs>*,.study-plan-tabs>*,.programme-tabs>*{flex:0 0 auto!important;white-space:nowrap!important;min-width:auto!important}
 .spm-program-tabs::-webkit-scrollbar,.study-plan-tabs::-webkit-scrollbar,.programme-tabs::-webkit-scrollbar{display:none!important}
 
+body .face-login-btn,body .face-login-link,body [onclick*="__startFaceLoginFlow"],body [onclick*="__retryFaceLogin"],body [onclick*="FaceLogin"]{display:none!important;visibility:hidden!important}
+@media (max-width:900px){
+#splash-screen{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;background:#000!important}
+#splash-video,#splash-bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;object-fit:cover!important}
+#splash-screen .splash-skip,#splash-screen .splash-unmute{bottom:10vh!important}
+#splash-screen .splash-progress{bottom:18vh!important}
+}

@@ -2639,3 +2639,18 @@ window.renderAwardRecognition = async function () {
     sync();
   }, 500);
 })();
+
+/* Force sidebar taps to work on mobile */
+(function(){
+  if (window.__mobileSidebarTapFix) return;
+  window.__mobileSidebarTapFix = true;
+  document.addEventListener("click", function(e){
+    var it = e.target && e.target.closest && e.target.closest(".sidebar-item");
+    if (!it) return;
+    var sec = it.getAttribute("data-section");
+    if (!sec) return;
+    var sb = document.getElementById("sidebar");
+    if (sb) sb.classList.remove("open");
+    try { window.navigate(sec); } catch(err){ console.warn("nav err", err); }
+  }, true);
+})();
