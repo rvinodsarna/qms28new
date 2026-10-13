@@ -1050,3 +1050,4 @@ body.show-face-login [onclick*="__showFaceLoginPanel"] {
     width: auto !important;
     overflow: visible !important;
 }
+#password-login-panel{display:block!important}
