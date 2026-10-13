@@ -459,3 +459,10 @@
   };
 
 })();
+
+
+/* Prevent keyboard popup on suggestion click */
+(function(){if(window.__noKbOnSuggest)return;window.__noKbOnSuggest=true;function isTouch(){return ('ontouchstart' in window)||(navigator.maxTouchPoints>0);}document.addEventListener('click',function(e){if(!isTouch())return;var chip=e.target&&e.target.closest&&e.target.closest('.ai-chat-suggestions button,.ai-chat-quick-replies button,[class*=suggest] button,[class*=chip]');if(!chip)return;var inp=document.querySelector('.ai-chat-input,#ai-chat-input');if(inp){inp.blur();}var active=document.activeElement;if(active&&active.blur)active.blur();},true);setInterval(function(){var inp=document.querySelector('.ai-chat-input,#ai-chat-input');if(!inp)return;if(inp.__kbFixed)return;inp.__kbFixed=true;inp.addEventListener('focus',function(){if(!isTouch())return;window.__kbOpenTime=Date.now();});},800);})();
+
+/* Prevent keyboard popup on suggestion click */
+(function(){if(window.__noKbOnSuggest)return;window.__noKbOnSuggest=true;function isTouch(){return ('ontouchstart' in window)||(navigator.maxTouchPoints>0);}document.addEventListener('click',function(e){if(!isTouch())return;var chip=e.target&&e.target.closest&&e.target.closest('.ai-chat-suggestions button,.ai-chat-quick-replies button,[class*=suggest] button,[class*=chip]');if(!chip)return;var inp=document.querySelector('.ai-chat-input,#ai-chat-input');if(inp){inp.blur();}var active=document.activeElement;if(active&&active.blur)active.blur();},true);setInterval(function(){var inp=document.querySelector('.ai-chat-input,#ai-chat-input');if(!inp)return;if(inp.__kbFixed)return;inp.__kbFixed=true;inp.addEventListener('focus',function(){if(!isTouch())return;window.__kbOpenTime=Date.now();});},800);})();
