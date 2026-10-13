@@ -2690,3 +2690,6 @@ window.renderAwardRecognition = async function () {
     apply();
   }
 })();
+
+/* Clean splash mute button: independent state, no volumechange */
+(function(){if(window.__splashMuteCleanV1)return;window.__splashMuteCleanV1=true;function install(){var oldBtn=document.getElementById('splash-unmute-btn');var video=document.getElementById('splash-video');if(!oldBtn||!video)return false;if(oldBtn.__cleanWired)return true;var newBtn=oldBtn.cloneNode(true);oldBtn.parentNode.replaceChild(newBtn,oldBtn);newBtn.__cleanWired=true;var isMuted=true;function update(){newBtn.innerHTML=isMuted?'\uD83D\uDD07 Unmute':'\uD83D\uDD0A Mute';}newBtn.style.display='block';newBtn.classList.add('ready');video.muted=true;update();newBtn.addEventListener('click',function(e){e.stopPropagation();e.preventDefault();isMuted=!isMuted;video.muted=isMuted;if(!isMuted){try{video.play().catch(function(){});}catch(err){}}update();});return true;}var tries=0;var iv=setInterval(function(){if(install()||++tries>60)clearInterval(iv);},500);})();
